@@ -1,0 +1,62 @@
+a/*!
+ * Start Bootstrap - Scrolling Nav (https://startbootstrap.com/template-overviews/scrolling-nav)
+ * Copyright 2013-2019 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-scrolling-nav/blob/master/LICENSE)
+ */
+ header {
+    padding: 156px 0 100px;
+  }
+  
+  section {
+    padding: 150px 0;
+  }
+
+  .fixed-top-2 {
+    margin-top: 106px;
+}
+  
+.logo{
+  max-height: 80px !important;
+  max-width: 13em;
+}
+/*
+.header_show{
+  opacity:0.8;
+  padding:308px;
+}
+*/
+.navbar-dark .navbar-nav .nav-link{
+  position: relative;
+    display: inline-block;
+    color: white  !important;
+    font-family: roboto condensed,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,sans-serif;
+    font-size: 15px;
+    line-height: 1.2;
+    letter-spacing: .1em;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: .25s;
+  font-family: roboto condensed,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,sans-serif !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover{
+  color:#fac733 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:active{
+  color:#fac733 !important;
+}
+
+.navbar{
+  /*background-color: #3535346b !important;*/
+
+  background-color: #3a4046cf !important
+}
+
+.navbar.solid {
+  background:#343a40f7 !important;
+}
+
+.navbar_two .container{
+  display:block !important;
+}
