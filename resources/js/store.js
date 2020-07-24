@@ -30,7 +30,8 @@ let store ={
         }, // Fin añadir al carrito
         
         DeleteLocalStorage(state){
-            state.cartCount=0;
+            state.cartCount=0;            
+            localStorage.clear();
             localStorage.removeItem("MaquinariaCount");
             localStorage.removeItem("MaquinariaLocal");
         },

@@ -102,16 +102,20 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <div class="form-group form-check" v-for="condition in Condiciones" v-bind:key="condition.codigoCondicion">                 
-                    <label class="col-form-label" :for="condition.codigoCondicion">{{ condition.descripcion }}
-                        <input  type="checkbox" 
-                                v-model="checkedConditions" 
-                                :id="condition.codigoCondicion" 
-                                :value="condition.codigoCondicion">
-                    </label>                
+            <fieldset>
+                <legend><h5>Condiciones de renta:</h5></legend>
+                <div class="form-group row">                    
+                    <div class="form-group form-check" v-for="condition in Condiciones" v-bind:key="condition.codigoCondicion">
+                        <label class="col-form-label" :for="condition.codigoCondicion">{{ condition.descripcion }}
+                            <input  type="checkbox" 
+                                    v-model="checkedConditions" 
+                                    :id="condition.codigoCondicion" 
+                                    :value="condition.codigoCondicion">
+                        </label>                                        
+                    </div>
                 </div>
-            </div>
+            </fieldset>
+            
 
             <div class="col-sm-6 text-right">
                 <button @click="GuardarMaquinaria" 

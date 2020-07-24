@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-mix.disableNotifications();
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -10,9 +10,6 @@ mix.disableNotifications();
  | file for the application as well as bundling up all the JS files.
  |
  */
-module.exports ={
-    mode:'production'
-}
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');

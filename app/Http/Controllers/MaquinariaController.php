@@ -23,25 +23,21 @@ class MaquinariaController extends Controller
 
     }
 
-    public function getMaquinaria(Request $request){
-            //$LocalMaquinaria = array_keys($request->all());
-           $cart = json_decode(Request("data"));
-            //$data = $request->all();           
-            $MaquinariaCart = Maquinaria::select('maquinarias.id_maquinaria',
-                                                 'maquinarias.Nombre_maquinaria',
-                                                 'maquinarias.Precio_x_hora',
-                                                 'maquinarias.Horas_minima',
-                                                 'maquinarias.imagen')                                          
+    public function getMaquinaria(Request $request){            
+        $cart = json_decode(Request("data"));
+            
+        $MaquinariaCart = Maquinaria::select('maquinarias.id_maquinaria',
+                                             'maquinarias.Nombre_maquinaria',
+                                             'maquinarias.Precio_x_hora',
+                                             'maquinarias.precioHoraMes',
+                                             'maquinarias.precioHoraSemana',
+                                             'maquinarias.Horas_minima',
+                                             'maquinarias.imagen')                                          
                                           ->whereIn('maquinarias.id_maquinaria',$cart)
                                           ->get();
 
-            return($MaquinariaCart);                                          
-            /*
-            return response()
-            ->json([
-                "Maquinaria" => $MaquinariaCart
-            ],200);
-            */
+        return($MaquinariaCart);                                          
+             
     }
 
     
@@ -121,8 +117,8 @@ class MaquinariaController extends Controller
         $Maquinaria = Maquinaria::select('maquinarias.id_maquinaria',
                                                  'maquinarias.Nombre_maquinaria',
                                                  'maquinarias.Precio_x_Hora',
-                                                 'maquinarias.precioMes',
-                                                 'maquinarias.precioSemana',
+                                                 'maquinarias.precioHoraMes',
+                                                 'maquinarias.precioHoraSemana',
                                                  'maquinarias.Descripcion_maquinaria',
                                                  'localidads.Nombre_localidad',
                                                  'maquinarias.imagen')                               

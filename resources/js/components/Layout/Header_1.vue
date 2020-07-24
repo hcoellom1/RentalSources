@@ -1,5 +1,6 @@
 <template>
-<nav class="navbar navbar_two text-white navbar-expand-lg fixed-top fixed-top-2" >
+<nav    v-if="$route.name != 'Login'"
+        class="navbar navbar_two text-white navbar-expand-lg fixed-top fixed-top-2">
         <div class="container">
                      <div class="form-inline">
                                 <div class="col-md-4 form-group">

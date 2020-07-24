@@ -79,14 +79,35 @@
                     <tbody>
                         <tr v-for="(MaquinariaLocals,index) in MaquinariaLocal" :key="MaquinariaLocals.id_maquinaria">                            
                             <td>{{MaquinariaLocals.Nombre_maquinaria}}</td>
-                            <td><input v-model.number="MaquinariaLocals.Horas_minima" class="form-control" type="number" min=1 max=500  step=1 value="1" ></td> 
-                            <td class="text-right">{{$store.state.Moneda}}<input type="number" class="text-right" readonly v-model.number="MaquinariaLocals.Precio_x_hora"></td>                              
-                            <td class="text-right">{{$store.state.Moneda}}<input type="number" class="text-right" readonly v-model.number="subtotalRow[index]"></td>
-                            <td class="text-right"><button class="btn btn-sm btn-danger"  @click.prevent="removeFromCart(MaquinariaLocals.id_maquinaria,index)">
-                                                        Eliminar
+                            <td><input v-model.number="MaquinariaLocals.Horas_minima" 
+                                       class="form-control" 
+                                       type="number" min=1 max=500  step=1 
+                                       value="">
+                            </td>
+                                       
+                            <td class="text-right">{{$store.state.Moneda}}
+                                <!--    <input type="number" 
+                                       class="text-right" 
+                                       v-model.number="MaquinariaLocals.Precio_x_hora"
+                                       readonly> !-->
+                                <input type="number" 
+                                       class="text-right"                                        
+                                       v-model.number="MaquinariaLocals.Precio_x_hora"                                       
+                                       readonly>
+                            </td>                              
+                            <td class="text-right">{{$store.state.Moneda}}
+                                <input  type="number" 
+                                        class="text-right" 
+                                        v-model.number="subtotalRow[index]"
+                                        readonly >
+                            </td>
+                            <td class="text-right">
+                                <button class="btn btn-sm btn-danger"  
+                                        @click.prevent="removeFromCart(MaquinariaLocals.id_maquinaria,index)">
+                                    Eliminar
                                 <i class="fa fa-trash"></i>
                                 </button>
-                                </td>
+                            </td>
                          </tr> 
                         <tr>
                             <td></td>
@@ -113,6 +134,13 @@
                 </table>
             </div>
         </div>
+
+        
+            <div class="col mb-2">                
+                <label>**Observe que el precio por hora cambia dependiendo de la cantidad</label>                            
+            </div>
+        
+        
         <div class="col mb-2">
             <div class="row">
                 <div class="col-sm-12  col-md-6">
@@ -159,16 +187,14 @@ export default {
         }
     },
     mounted(){
-                 axios.get('api/Localidad').then((Response)=>{
-                     this.Localidades = Response.data;     
-                     }).catch(function(error){
-                         console.log(error);
-                     });
+            axios.get('api/Localidad').then((Response)=>{
+                this.Localidades = Response.data;     
+            }).catch(function(error){
+                console.log(error);
+            });
 
          // Obteniendo Id de los productos agregados al carrito en localStorage
              this.storageMaquinaria = localStorage.getItem('MaquinariaLocal');                                  
-
-
 
             if (this.storageMaquinaria != null) {
         // Se envian los ids de la maquinaria para obtener la otra información        
@@ -189,13 +215,43 @@ export default {
     computed:{        
         subtotalRow(){
                 return this.MaquinariaLocal.map((MaquinariaLocals)=>{
-                    return Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
+                    //return Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
+
+                    if(MaquinariaLocals.Horas_minima <= 44){
+                       return Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
+                    }else if (MaquinariaLocals.Horas_minima > 44 && MaquinariaLocals.Horas_minima <= 176){
+                        return Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.precioHoraSemana);
+                    }else{
+                        return Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.precioHoraMes);
+                    }
+
                 });
             },
+        precioHoraRow(){
 
+            return this.MaquinariaLocal.map((MaquinariaLocals)=>{
+                if(MaquinariaLocals.Horas_minima <= 44){
+                    return Number(MaquinariaLocals.Precio_x_hora);
+                }else if (MaquinariaLocals.Horas_minima > 44 && MaquinariaLocals.Horas_minima <= 176){
+                    return Number(MaquinariaLocals.precioHoraSemana);
+                }else{
+                    return Number(MaquinariaLocals.precioHoraMes);
+                }
+            });           
+                
+        },
         total() {
           return this.MaquinariaLocal.reduce((total,MaquinariaLocals) => {
-            return total + (MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
+
+            if(MaquinariaLocals.Horas_minima <= 44){
+                return total + Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
+            }else if (MaquinariaLocals.Horas_minima > 44 && MaquinariaLocals.Horas_minima <= 176){
+                return total + Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.precioHoraSemana);
+            }else{
+                return total + Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.precioHoraMes);
+            }
+
+            //return total + (MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
           }, 0);
         }
             
@@ -227,7 +283,8 @@ export default {
                      this.Email &&                    
                      this.Direccion)
                      {
-                        this.GuardarFormulario();                     
+                         console.log(this.MaquinariaLocal);
+                        //0this.GuardarFormulario();                     
                         
                      }
 
@@ -261,18 +318,8 @@ export default {
                      e.preventDefault();
             },
 
-             GuardarFormulario(){
-                 
-                 const idfactura=0;
-                    /*
-                    this.MaquinariaLocal.map((MaquinariaLocals)=>{
-                        this.saveMaquinaria.push({id_maquinaria:MaquinariaLocals.id_maquinaria,Horas:MaquinariaLocals.hora});
-                        //return Number(MaquinariaLocals.hora*MaquinariaLocals.Precio_x_hora);
-                     });
-                    //console.log(JSON.stringify(this.saveMaquinaria));
-                    */
-                   
-                   
+             GuardarFormulario(){                 
+              const idfactura=0;
               axios.post('api/SaveCart',{
                     Nombres: this.Nombres,
                     Apellidos :this.Apellidos,
@@ -283,18 +330,14 @@ export default {
                     Direccion: this.Direccion,
                     Maquinarias : JSON.stringify(this.MaquinariaLocal)                    
                 }).then((response)=>{
-                    this.$store.state.IdFactura = response.data;                    
+                    console.log(this.MaquinariaLocal);
+                    this.$store.state.IdFactura = response.data;                                        
                     this.$store.commit('DeleteLocalStorage'); //limpio el localStorage (carrito)
                     this.$router.push({name:'Confirmation'});                    
+                    
                 }).catch(function(error){
-                        console.error(error);
+                    console.error(error);
                 });
-
-                /*
-                console.log(this.res);
-                if (res.status ==200){
-                    console.log('entre');
-                }*/
              
             /* 
              console.log(this.$store.state.IdFactura);*/

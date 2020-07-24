@@ -50,6 +50,7 @@ class SolicitudController extends Controller
         $TotalFactura =0;
 
         foreach($Maquinarias as $Maqui){
+            //precioHoraRow $TotalFactura+= $Maqui["Precio_x_hora"]*$Maqui["Horas_minima"];
             $TotalFactura+= $Maqui["Precio_x_hora"]*$Maqui["Horas_minima"];
         }
                 
@@ -57,7 +58,8 @@ class SolicitudController extends Controller
                                                 "Localidad"=>$Departamento,
                                               "Estado"=>"ACTIVO",
                                               "Subtotal"=>$TotalFactura,
-                                              "direccionProyecto"=>$Direccion]);
+                                              "direccionProyecto"=>$Direccion,
+                                              "estadoSolicitud" => "P"]);
                                    
         foreach($Maquinarias as $obj){
             DB::insert('insert into detallesolicitud(id_solicitud,
@@ -90,23 +92,7 @@ class SolicitudController extends Controller
     }
     public function show($id)
     {
-
-        /*
-        $Solicitud = Solicitud::select(     'solicituds.id_solicitud',
-                                            'solicituds.fecha_registro',
-                                            'solicituds.Subtotal',
-                                            'personas.Nombre',
-                                            'personas.Apellidos',
-                                            'personas.Direccion',                                           
-                                            'detallesolicitud.horas',
-                                            'maquinarias.Precio_x_Hora',
-                                            'maquinarias.Nombre_maquinaria')
-                                     ->Join('detallesolicitud','Solicituds.id_solicitud','=','detallesolicitud.id_solicitud')
-                                     ->Join('personas','solicituds.identidad','=','personas.identidad')
-                                     ->Join('maquinarias','detallesolicitud.id_maquinaria','=','maquinarias.id_maquinaria')                                     
-                                     ->where('solicituds.id_solicitud',$id)                                     
-                                     ->get();*/
- 
+        
         $Solicitud = Solicitud::select('solicituds.id_solicitud',
                                        'solicituds.fecha_registro',
                                        'solicituds.Subtotal',                                            
@@ -158,16 +144,16 @@ class SolicitudController extends Controller
         
         //Send mail to client
         Mail::to($request->getEmail())                        
-            ->send(new MessageReceived($request, null, 'RQ'));
+            ->send(new MessageReceived($request, null, 'RQ', $idSolicitud));
         
         //Send mail to rental
         Mail::to('rental.hn@gmail.com')                    
-             ->send(new MessageReceived($request, $machines, 'IQ'));        
+             ->send(new MessageReceived($request, $machines, 'IQ', $idSolicitud));
 
         //Send mail to owners machine
         foreach($machines as $machine){
             Mail::to($machine->Correo_Electronico)                    
-             ->send(new MessageReceived(null, $machine, 'OM'));
+             ->send(new MessageReceived(null, $machine, 'OM', $idSolicitud));
         }
     }
 

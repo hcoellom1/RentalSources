@@ -28,7 +28,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Número Solicitud</td>
+                                    <td>Número Solicitud</td>                                    
                                     <td>{{datafactura[0].id_solicitud}}</td>
                                 </tr>
                                 <tr>
@@ -48,18 +48,20 @@
                         <thead>
                             <tr>
                                 <th>Maquinaria</th>
-                                <th>Precio por hora</th>
                                 <th>Horas</th>
+                                <th>Precio por hora</th>                                
                                 <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for = "Factura in datafactura" :key="Factura.Nombre_Maquinaria"
                                 v-bind:value="Factura.Nombre_Maquinaria">
-                                <td class="w-3">{{Factura.Nombre_maquinaria}}</td>                                
-                                <td class="w-3">{{$store.state.Moneda}}&nbsp;{{Factura.Precio_x_Hora}}</td>
+                                <td class="w-3">{{Factura.Nombre_maquinaria}}</td>                   
                                 <td class="w-2">{{Factura.horas}}</td>
-                                <td class="w-4">{{$store.state.Moneda}}&nbsp;{{Factura.horas * Factura.Precio_x_Hora}}</td>
+                                <td class="w-3">{{$store.state.Moneda}}&nbsp;{{datafactura[0].Subtotal/Factura.horas}}</td>
+                                <!--<td class="w-3">{{$store.state.Moneda}}&nbsp;{{Factura.Precio_x_Hora}}</td>!-->                                
+                                <td class="w-4">{{$store.state.Moneda}}&nbsp;{{Factura.horas * (datafactura[0].Subtotal/Factura.horas)}}</td>
+                                <!-- <td class="w-4">{{$store.state.Moneda}}&nbsp;{{Factura.horas * Factura.Precio_x_Hora}}</td> !-->
                             </tr>
                         </tbody>
                         <tfoot>
@@ -72,8 +74,12 @@
                                 <td>{{$store.state.Moneda}}&nbsp;0</td>
                             </tr>
                             <tr>
+                                <td colspan="3">ISV</td>
+                                <td>{{$store.state.Moneda}}&nbsp;{{ datafactura[0].Subtotal * 0.15 }}</td>
+                            </tr>
+                            <tr>
                                 <td colspan="3">Gran Total</td>
-                                <td>{{$store.state.Moneda}}&nbsp;{{datafactura[0].Subtotal}}</td>
+                                <td>{{$store.state.Moneda}}&nbsp;{{datafactura[0].Subtotal * 1.15}}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -95,21 +101,22 @@
             
             if (this.$store.state.IdFactura != 0 ){
                     console.log(this.$store.state.IdFactura);                
-            axios.get('api/Solicitud/'+this.$store.state.IdFactura).then((Response)=>{
-                     this.datafactura = Response.data; 
-                     console.log(this.datafactura);   
-                     }).catch(function(error){
+                    axios.get('api/Solicitud/'+this.$store.state.IdFactura).then((Response)=>{
+                         this.datafactura = Response.data; 
+                         console.log(this.datafactura);   
+                    }).catch(function(error){
                          console.log(error);
                      });    
             }else{
                 console.log('No hay idFactura');
+                this.$router.push({name:'Home'});
             } 
                     
        },
        methods:{
             viewFactura(){
-                this.$router.push({name:'Home'});
-                //window.print();
+                //this.$router.push({name:'Home'});
+                window.print();
             }
 
        }

@@ -1,5 +1,5 @@
 <template>
-<nav class="navbar navbar_first navbar-dark navbar-expand-lg fixed-top" id="mainNav">
+<nav  v-if="$route.name != 'Login'" class="navbar navbar_first navbar-dark navbar-expand-lg fixed-top" id="mainNav">
         <div class="container">
           <router-link to="/"><a class="navbar-brand js-scroll-trigger" href="#page-top">
           <img class='logo' :src="'storage/images/Logo_Rental.png'" /></a></router-link>
@@ -39,7 +39,16 @@
                     <span class='CarritoCount'>( {{ $store.state.cartCount }} )</span>
                   </a>
                 </li>
-              </router-link>
+              </router-link>              
+
+              <li class="nav-item">
+                  <router-link class="nav-link js-scroll-trigger"
+                    :to="{name:'login',hash:'login'}">
+                    Login
+                  </router-link>
+              </li>
+
+
             </ul>
           </div>
         </div>

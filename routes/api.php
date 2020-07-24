@@ -31,6 +31,9 @@ Route::get('MachineConditions/{idMachine}', 'MachineConditionsController@show');
 
 Route::get('Conditions', 'ConditionsController@show');
 
+Route::get('users/loginUser', 'auth\LoginController@authenticate');
+
+
 
 //post Route
 Route::post('Products', 'MaquinariaController@show');
@@ -40,6 +43,9 @@ Route::post('ProductsCart', 'MaquinariaController@getMaquinaria');
 Route::post('SaveCart','SolicitudController@Store');
 
 Route::post('image/SaveMaquinaria', 'MaquinariaController@store');
+
+
+
 
 /*
 Route::group(['middleware' => 'jwt.auth'], function ($router) {

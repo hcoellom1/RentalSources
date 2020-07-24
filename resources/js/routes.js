@@ -8,7 +8,6 @@ import Confirmation from './components/Confirmation.vue';
 import Mantenimiento from './components/Mantenimiento.vue';
 import Login from './components/Login.vue';
 
-
 //import PageTwo from './views/PageTwo.vue';
 
 let routes = [
@@ -48,11 +47,11 @@ let routes = [
       props:true
     },
     {
-      path: '/Login',
+      path: '/login',
       name:'Login',
       component: Login,
       props:true
-    },
+    },    
     {
         path:"*",
         component: PaginaNoEncontrada
