@@ -17,11 +17,11 @@
         <li>Dirección: {{ $machines->direccionProyecto }}</li>
     </ul>
 
-    <p>Agradecemos responda a este correo indicando la disp onibilidad</p>
+    <p>Agradecemos responda a este correo indicando la disponibilidad</p>
 
     <p><h1>El detalle de la maquinaria solicitada es el siguiente</h1></p>
     <ul>
-        <li>Máquina: {{ $machines->Nombre_maquinaria }} </li>
+        <li>Máquina: {{ $machines->Nombre_maquinaria }} &nbsp; {{ $requestTime }}</li>
     </ul>
     
     <p>Atentamente Rental Maquinaria & Equipo &copy;</p>

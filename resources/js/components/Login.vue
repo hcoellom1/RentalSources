@@ -1,93 +1,83 @@
-<template>
-<div class="container" style="margin-top:100px;margin-bottom:100px;">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Login</div>
-
-                <div class="card-body">
-                    
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" 
-                                       class="form-control @error('email') is-invalid @enderror"
-                                       v-model="email" 
-                                       value="email" 
-                                       required autocomplete="email" 
-                                       autofocus>
-
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>Invalid mail</strong>
-                                    </span>
-
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" 
-                                       class="form-control @error('password') is-invalid @enderror" 
-                                       v-model="password" 
-                                       required autocomplete="current-password">
-                                
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember">
-
-                                    <label class="form-check-label" for="remember">
-                                        Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button @click="authenticateUser"
-                                        class="btn btn-primary">
-                                    Login
-                                </button>
-                            </div>
-                        </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<template>	<!-- Main Content -->
+	<div class="container-fluid">
+		<div class="main-content bg-success text-center">
+			<div class="col-md-4 text-center company__info">
+				<span class="company__logo"><h2><span class="fa fa-android"></span></h2></span>
+				<img src="storage/images/Logo_Rental.png" class="logo">
+			</div>
+			<div class="col-md-8 col-xs-12 col-sm-12 login_form">
+				<div class="container-fluid">
+					<div class="row">
+						<h2>Iniciar Sesión</h2>
+					</div>
+					<div class="row">
+						<form autocomplete="off" @submit.prevent="login" method="post">
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" class="form__input" placeholder="user@example.com" v-model="correo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" class="form__input" v-model="contrasenia" required>
+                    </div>
+                    <button type="submit" class="btn_entrar">Entrar</button>
+                </form>
+					</div>
+					<div class="row">
+						<p>¿No tienes una cuenta? 
+              <a class="nav-item" href="#">
+               <router-link 
+               :to="{name:'Register'}">
+                Registrate Aquí
+               </router-link>
+              </a>              
+            </p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
-
-
 <script>
-
-export default {
-        data(){
-                return{
-                    email:'',                        
-                    password:''
-                }
-        },
-        methods:{             
-            authenticateUser(){
-                axios.get('api/users/loginUser',{
-                    email: this.email,
-                    password : this.password                    
-                }).then((response)=>{
-                    console.log(response.data);
-                }).catch(function(error){
-                        console.log(error);
-                });
-            }
-        }
-}
+  export default {
+    name:'Login',
+    data() {
+      return {
+        contrasenia: null,
+        correo: null,
+        success :false,        
+        has_error: false,
+        error:''
+      }
+    },
+    mounted() {
+      //
+    },
+    methods: {
+      login() {
+        // get the redirect object
+        var redirect = this.$auth.redirect()
+        var app = this
+        this.$auth.login({
+          data: {
+            email: app.correo,
+            password: app.contrasenia
+          },
+          success: function() {            
+            console.log("Exitoso");
+            app.success = true;
+            const redirectTo = 'Dashboard';
+            app.$router.push({name:redirectTo});
+            
+          },
+          error: function(error) {            
+            app.has_error = true
+          },
+          rememberMe: true,
+          fetchUser: true
+        })
+      }
+    }
+  }
 </script>

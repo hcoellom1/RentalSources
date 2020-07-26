@@ -31,6 +31,11 @@ class MessageReceived extends Mailable
     public $requestId;
 
     /**
+     * Property for display total time required
+     */
+    public $requestTime;
+
+    /**
      * Values
      *  IQ = Inquiry, send mail to rental
      *  OM = Owner machine, send mail for every owner of machines in request detail
@@ -67,8 +72,24 @@ class MessageReceived extends Mailable
             return $this->subject('Nueva Solicitud de Renta')->view('emails.message-received-inquiry');
         }
             
-        if ($this->destinatary == 'OM')
-            return $this->subject('Rental - Nueva petición de maquinaria')->view('emails.message-received-omachine');
+        if ($this->destinatary == 'OM'){
+            
+            foreach($this->machines as $machine){
+
+                $time = $this->machines->Horas;
+
+                if ($time > 0 && $time <= 44)
+                    $this->requestTime = 'El tiempo solicitado es: '.round( ($time/8), 2).' días';
+                else if($time > 44 && $time <= 176)
+                    $this->requestTime = 'El tiempo solicitado es: '.round (($time/44), 2).' semanas';
+                else
+                    $this->requestTime = 'El tiempo solicitado es: '.round( ($time/176), 2).' meses';
+
+               return $this->subject('Rental - Nueva petición de maquinaria')->view('emails.message-received-omachine');
+            }
+
+        }
+            
     }
     
 }

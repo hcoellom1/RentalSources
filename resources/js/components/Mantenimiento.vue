@@ -1,104 +1,155 @@
 <template>    
-    <div class='container' style="margin-top:200px">
-
-         <div class="container mb-4 form">
-             <div class="page-header">
-                <h3>Agregar Nueva Maquinaria:</h3>      
-            </div>            
-
+    <div class="container form_stlye">
+        <h1 class="h3 mb-2 text-gray-800">Registro de Nueva Maquinaria</h1>
+        <p class="mb-4">Ingrese toda la información requerida para poder registrar la maquinaria.</p>        
+        <fieldset>
+            <!-- Text input-->
             <div class="form-group row">
-            
-                <div class="col-sm-6">
-                    <label for="Nombre">Nombre Maquinaria:</label>
-                    <input type="text" class="form-control" 
-                           v-model="Nombre" 
-                           placeholder="**Nombres" 
-                           value="" />
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label class="control-label">Nombre Maquinaria</label>        
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input  type="text" class="form-control" 
+                                    v-model="Nombre" 
+                                    placeholder="Nombre"
+                                    value="" />
+                        </div>
                 </div>
-                
-                <div class="col-sm-6">
-                    <label for="Descripcion">Descripción:</label>
-                    <input type="text" class="form-control" 
+
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label class="control-label" >Descripcion Maquinaria</label>     
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" class="form-control" 
                            v-model="Descripcion" 
-                           placeholder="**Descripción de maquinaria" 
-                           value="" />            
-                </div> 
-
-            </div>
-
-
-            <div class="form-group row">    
-
-                <div class="col-sm-6">
-                    <label for="Nombre">Precio por hora:</label>
-                    <input type="number" class="form-control" 
-                           v-model="Precio_x_Hora" 
-                           placeholder="**Precio por Hora" 
+                           placeholder="Descripción de maquinaria" 
                            value="" />
+                        
+                    </div>
                 </div>
-        
-                <div class="col-sm-6">
-                    <label for="Imagen">Imagen:</label>
-                    <input type="file" accept="image/*"  
-                           v-on:change="CargarImagen" 
-                           class="form-control" 
-                           placeholder="Cargar Imagen" 
-                           value="" />
-                </div>   
-        
             </div>
+
+            <div class="form-group row"> 
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label class="control-label">Tipo Maquinaria</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+                            <select class="form-control selectpicker" v-model="vrTipoMaquinaria">
+                                <option v-for = "TipoMaquinaria in TipoMaquinaria" 
+                                        :key="TipoMaquinaria.Id_tipo_maquinaria"
+                                        v-bind:value="TipoMaquinaria.Id_tipo_maquinaria">
+                                        {{TipoMaquinaria.Tipo_maquinarias}}
+                                </option>      
+                            </select>
+                        </div>
+                </div>
+
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label class="control-label">Ubicación de la Maquinaria</label>
+                        <div class="selectContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+                                    <select class="form-control selectpicker" v-model ='vrLocalidad'>
+                                        <option v-for = "Localidades in Localidades" 
+                                                :key="Localidades.id_localidad"
+                                                v-bind:value="Localidades.id_localidad">
+                                                {{Localidades.nombre_localidad}}
+                                        </option>             
+                                    </select>
+                            </div>
+                        </div>
+                </div>
+            </div>   
+            <!-- Text input-->
+
+            <!-- Text Option-->
+            <div class="form-group row"> 
+                <div class="col-sm-6 mb-3 mb-sm-0"> 
+                    <label class="control-label">Disponible Para?</label>
+                    <div class="selectContainer">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+                            <select class="form-control selectpicker" v-model="QueDesea">                                
+                                <option value="">-- Seleccionar --</option>
+                                <option>Renta</option>
+                                <option>Venta</option>     
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label class="control-label">Precio Por Hora</label>  
+                        <div class="inputGroupContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input type="number" class="form-control" 
+                                        v-model="Precio_x_Hora" 
+                                        placeholder="**Precio por Hora" 
+                                        value="" />
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <!-- Text input-->
+    
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label class="control-label">Precio Por Hora|Semana</label>  
+                        <div class="inputGroupContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input  v-model="Precio_x_semana" 
+                                        placeholder="Precio por Hora|Semana" 
+                                        class="form-control"  
+                                        type="number" 
+                                        min=1 
+                                        value="">
+                            </div>
+                        </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label class="control-label">Precio Por Hora|Mes</label>  
+                        <div class="inputGroupContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input  v-model="Precio_x_mes" 
+                                        placeholder="Precio por Hora|Mes" 
+                                        class="form-control"  
+                                        type="number" 
+                                        min=1 
+                                        value="">                                                           
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <!-- Text input-->
 
             <div class="form-group row">
-                <div class="col-sm-6">
-                    <label for="Nombre">Precio por semana:</label>
-                    <input type="number" class="form-control" 
-                    v-model="Precio_x_semana" 
-                    placeholder="**Precio por semana" 
-                    value="" />
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-sm-6">
-                    <label for="Nombre">Precio por mes:</label>
-                    <input type="number" class="form-control" 
-                           v-model="Precio_x_mes" 
-                           placeholder="**Precio por semana" 
-                           value="" />
-                </div>
-            </div>
-
-            <div class="form-group row">   
-                <div class="col-sm-6">
-                    <label class="col-form-label" for="que_buscas">Tipo Maquinaria </label>                                
-                    <select class="select" v-model="vrTipoMaquinaria" >
-                        <option v-for = "TipoMaquinaria in TipoMaquinaria" 
-                                :key="TipoMaquinaria.Id_tipo_maquinaria"
-                                v-bind:value="TipoMaquinaria.Id_tipo_maquinaria">
-                                {{TipoMaquinaria.Tipo_maquinarias}}
-                        </option>       
-                    </select>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label class="control-label">Horas Mínimas Para Alquiler</label>  
+                        <div class="inputGroupContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input  name="HorasMinimas" placeholder="Horas Minimas" class="form-control"  type="number" min=1>
+                            </div>
+                        </div>
                 </div>
 
-                <div class="col-sm-6">
-                    <label class="col-form-label" for="que_buscas">Ubicación</label>
-                    <select class="select"  v-model ='vrLocalidad'>
-                        <option v-for = "Localidades in Localidades" 
-                                :key="Localidades.id_localidad"
-                                v-bind:value="Localidades.id_localidad">
-                            {{Localidades.nombre_localidad}}
-                        </option>          
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-sm-6">    
-                    <label class="col-form-label" for="que_buscas">¿Disponible para? </label>
-                    <select class="select" data-style="btn-inverse" v-model="QueDesea">
-                        <option >Venta</option>
-                        <option >Rentar</option>
-                    </select>   
+                <!-- Text Image-->
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <label class="control-label">Imagen Maquinaria</label>            
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+                            <input class="form-control"  
+                                    type="file" 
+                                    accept="image/*"  
+                                    v-on:change="CargarImagen"  
+                                    placeholder="Cargar Imagen" 
+                                    value="" />                            
+                        </div>
                 </div>
             </div>
 
@@ -115,18 +166,28 @@
                     </div>
                 </div>
             </fieldset>
-            
 
-            <div class="col-sm-6 text-right">
-                <button @click="GuardarMaquinaria" 
-                        class="btn btn-lg btn-block btn-warning text-white text-uppercase">
-                        Guardar Maquinaria                        
-                </button>
+            <!-- Success message -->
+            <div class="alert alert-success" 
+                 role="alert" 
+                 id="success_message"
+                 v-if="saved">Maquinaria registrada con éxito                 
             </div>
 
-         </div>
+            <!-- Button -->
+            <div class="text-center">      
+                <div class="col-sm-12"><br>
+                    <button @click="GuardarMaquinaria" 
+                            type="submit" 
+                            class="btn btn-warning col-sm-8">Guardar Maquinaria<span class="glyphicon glyphicon-send"></span>
+                    </button>
+                </div>
+            </div>
 
+
+        </fieldset>        
     </div>
+    
 </template>
 
 <script>
@@ -147,7 +208,9 @@ export default {
                         vrTipoMaquinaria:'',
                         vrLocalidad:'',
                         QueDesea:'',
-                        imgNombre :''
+                        imgNombre :'',
+                        saved:false,
+                        email:''
 
                 }
         },
@@ -170,7 +233,7 @@ export default {
                 reader.readAsDataURL(file);
             },
             GuardarMaquinaria(){
-                axios.post('api/image/SaveMaquinaria',{
+                axios.post('image/SaveMaquinaria',{
                     imagen: this.ImgMaquinaria,
                     imgNombre : this.imgNombre,
                     nombreMaquinaria:this.Nombre,
@@ -181,9 +244,11 @@ export default {
                     tipoMaquinaria:this.vrTipoMaquinaria,
                     localidadMaquinaria:this.vrLocalidad,
                     queDeseaMaquinaria:this.QueDesea,
-                    machineConditions:this.checkedConditions
+                    machineConditions:this.checkedConditions,
+                    emailOwner:this.email
                 }).then((response)=>{
                     console.log(response);
+                    this.saved = true;
                 }).catch(function(error){
                         console.log(error);
                 });
@@ -191,8 +256,10 @@ export default {
         },
         mounted(){
 
+                this.email = this.$auth.user().email;
+
                 //Get all locations
-                axios.get('api/Localidad').then((Response)=>{
+                axios.get('Localidad').then((Response)=>{
                      this.Localidades = Response.data;
                      
                 }).catch(function(error){
@@ -200,7 +267,7 @@ export default {
                 });     
                 
                 //Get kinds of machines
-                axios.get('api/AllTipoMaquinaria')
+                axios.get('AllTipoMaquinaria')
                         .then((Response)=>{                    
                         this.TipoMaquinaria = Response.data;                      
                 }).catch(function(error){
@@ -208,7 +275,7 @@ export default {
                 });
 
                 //Get conditions for rent
-                axios.get('api/Conditions')
+                axios.get('Conditions')
                         .then((Response)=>{                    
                         this.Condiciones = Response.data;                      
                 }).catch(function(error){

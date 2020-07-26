@@ -49,9 +49,14 @@ class SolicitudController extends Controller
         $idSolicitud=0;
         $TotalFactura =0;
 
-        foreach($Maquinarias as $Maqui){
-            //precioHoraRow $TotalFactura+= $Maqui["Precio_x_hora"]*$Maqui["Horas_minima"];
-            $TotalFactura+= $Maqui["Precio_x_hora"]*$Maqui["Horas_minima"];
+        foreach($Maquinarias as $Maqui){            
+            if ($Maqui["Horas_minima"] <= 44){
+                $TotalFactura += $Maqui["Precio_x_hora"] * $Maqui["Horas_minima"];
+            }else if($Maqui["Horas_minima"] > 44 && $Maqui["Horas_minima"] <= 176){
+                $TotalFactura += $Maqui["precioHoraSemana"] * $Maqui["Horas_minima"];
+            }else{
+                $TotalFactura += $Maqui["precioHoraMes"] * $Maqui["Horas_minima"];
+            }            
         }
                 
         $idSolicitud = DB::table('Solicituds')->insertGetId(["Fecha_solicitud"=>$Fecha,
@@ -85,25 +90,28 @@ class SolicitudController extends Controller
                                      $Departamento, $Nombres.'|'.$Apellidos, 
                                      $Direccion, $Telefono, $Email);
 
+        //Comment temporaly
         $this->sendMails($request, $idSolicitud); //Send mails for request
             
         return $idSolicitud;
         
     }
     public function show($id)
-    {
-        
+    {        
         $Solicitud = Solicitud::select('solicituds.id_solicitud',
-                                       'solicituds.fecha_registro',
-                                       'solicituds.Subtotal',                                            
-                                       'detallesolicitud.horas',
-                                       'maquinarias.Precio_x_Hora',
-                                       'maquinarias.Nombre_maquinaria')
-                              ->Join('detallesolicitud','Solicituds.id_solicitud','=','detallesolicitud.id_solicitud')                              
-                              ->Join('maquinarias','detallesolicitud.id_maquinaria','=','maquinarias.id_maquinaria')                                     
-                              ->where('solicituds.id_solicitud',$id)                                     
-                              ->get();
-
+                              'solicituds.fecha_registro',
+                              'solicituds.Subtotal',                                            
+                              'detallesolicitud.horas',
+                              'maquinarias.Nombre_maquinaria',                              
+                              DB::raw('(CASE 
+                                    WHEN detallesolicitud.horas <= 44 THEN maquinarias.Precio_x_hora
+                                    WHEN detallesolicitud.horas > 44 AND detallesolicitud.horas <= 176 THEN maquinarias.precioHoraSemana
+                                    WHEN detallesolicitud.horas > 176 THEN maquinarias.precioHoraMes
+                                END) as precioHora'))
+                     ->Join('detallesolicitud','Solicituds.id_solicitud','=','detallesolicitud.id_solicitud')                              
+                     ->Join('maquinarias','detallesolicitud.id_maquinaria','=','maquinarias.id_maquinaria')                                     
+                     ->where('solicituds.id_solicitud',$id)                                     
+                     ->get();
 
        return($Solicitud);
        
@@ -133,22 +141,27 @@ class SolicitudController extends Controller
      */
     private function sendMails($request, $idSolicitud){
         $machines = DB::table('maquinarias')
-                      ->join('personas', 'maquinarias.Identidad', '=', 'personas.Identidad')
+                      ->join('personas', 'maquinarias.Correo_electronico', '=', 'personas.Correo_Electronico')
                       ->join('detallesolicitud', 'detallesolicitud.id_maquinaria', '=', 'maquinarias.id_maquinaria')
                       ->join('solicituds','detallesolicitud.id_solicitud','=', 'solicituds.id_solicitud')
                       ->select('maquinarias.Nombre_maquinaria', 'personas.telefono', 'personas.Correo_Electronico',
                                'personas.Nombre', 'personas.apellidos','solicituds.Fecha_solicitud', 
-                               'solicituds.direccionProyecto')
-                      ->where('detallesolicitud.id_solicitud', '=', $idSolicitud)
+                               'solicituds.direccionProyecto', 'detallesolicitud.Horas')
+                      ->where([
+                                ['personas.tipoPersona','OM'],
+                                ['detallesolicitud.id_solicitud', '=', $idSolicitud]                               
+                             ])
                       ->get();
         
         //Send mail to client
-        Mail::to($request->getEmail())                        
+        /*Mail::to($request->getEmail())                        
             ->send(new MessageReceived($request, null, 'RQ', $idSolicitud));
+            */
         
         //Send mail to rental
+        /*
         Mail::to('rental.hn@gmail.com')                    
-             ->send(new MessageReceived($request, $machines, 'IQ', $idSolicitud));
+             ->send(new MessageReceived($request, $machines, 'IQ', $idSolicitud));*/
 
         //Send mail to owners machine
         foreach($machines as $machine){

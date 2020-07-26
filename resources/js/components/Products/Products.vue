@@ -121,20 +121,31 @@
       </div>
 </div>
 </div> <!-- Fin Row Details --> 
+<Footer/>
 </div> <!-- Main Product !-->
 
+
 </template>
+
 <script>
+
+import Header from "../Layout/Header.vue";
+import Header_1 from "../Layout/Header_1.vue";
+import Footer from "../Layout/Footer.vue";
+
 import { parse } from 'path';
 import { WSASERVICE_NOT_FOUND } from 'constants';
 export default {
   name:'Products',
   components:{
-  
+        Header,
+        Header_1,
+        Footer
   },
   mounted(){
-      axios.post('api/Products',{localidad:this.BuscarLocalidades,
-                                 tipoMaquinaria:this.BuscarTipoMaquinaria})
+      axios.post('Products',{
+                            localidad:this.BuscarLocalidades,
+                            tipoMaquinaria:this.BuscarTipoMaquinaria})
                     .then((response) => {
                         this.Maquinarias = response.data.Maquinaria;
                         console.log(this.Maquinarias);
@@ -143,13 +154,13 @@ export default {
                     });
   },
   created(){
-     axios.get('api/Localidad').then((Response)=>{
+     axios.get('Localidad').then((Response)=>{
                      this.localidades = Response.data;      
                      }).catch(function(error){
                         console.log(error);
                      });;
   
-     axios.get('api/AllTipoMaquinaria').then((Response)=>{
+     axios.get('AllTipoMaquinaria').then((Response)=>{
                      this.TipoMaquinaria = Response.data;    
                      }).catch(function(error){
                         console.log(error);
@@ -161,7 +172,7 @@ export default {
 
     GetProductos(BuscarLocalidades,BuscarTipoMaquinaria){
       
-     axios.post('api/Products',{localidad:this.BuscarLocalidades,
+     axios.post('Products',{localidad:this.BuscarLocalidades,
                                  tipoMaquinaria:this.BuscarTipoMaquinaria})
                     .then((response) => {
                         this.Maquinarias = response.data.Maquinaria
@@ -203,7 +214,7 @@ export default {
 
       // Looking for rental machine conditions
       MostrarDetalles(idMaquinaria){          
-          axios.get('api/MachineConditions/'+ idMaquinaria)
+          axios.get('MachineConditions/'+ idMaquinaria)
                      .then((response) => {this.Conditions = response.data.Conditions;  
                                           
                      let detailConditions = '<ul>';
@@ -223,9 +234,6 @@ export default {
                      }).catch(function(error){
                        console.log(error);
                      });
-
-
-
               
     }      
 

@@ -9,10 +9,10 @@ let store ={
     state: {
         cart:cart ? JSON.parse(cart):[],
         cartCount:cartCount ? parseInt(cartCount):0,
-        itemLocalidad:itemLocalidad ? JSON.parse(itemLocalidad):[],
+        itemLocalidad:itemLocalidad ? itemLocalidad:[],
         itemTipoMaquinaria:itemTipoMaquinaria ? JSON.parse(itemTipoMaquinaria):[],
         Moneda:Moneda ? Moneda: '$.',
-        IdFactura:IdFactura ? parseInt(IdFactura):0
+        IdFactura:IdFactura ? parseInt(IdFactura):0,
     },
     mutations:{
         addToCart(state,Maquinaria){
@@ -30,8 +30,7 @@ let store ={
         }, // Fin añadir al carrito
         
         DeleteLocalStorage(state){
-            state.cartCount=0;            
-            localStorage.clear();
+            state.cartCount=0;
             localStorage.removeItem("MaquinariaCount");
             localStorage.removeItem("MaquinariaLocal");
         },
@@ -65,8 +64,13 @@ let store ={
         }
 
     },
+    
     actions:{
-            
+      
+
+    },
+    getters:{
+        
     }
 }
 

@@ -9,10 +9,13 @@
 
   <!-- Internal Lik -->
   <link href={{ asset('css/nav-bar.css') }} rel="stylesheet">
-  <link href={{ asset('css/bootstrap-select.min.css') }} rel="stylesheet">  
-  <link href={{ asset('css/style.css') }} rel="stylesheet">  
+  <link href={{ asset('css/bootstrap-select.min.css') }} rel="stylesheet">
+  <link href={{ asset('css/style.css') }} rel="stylesheet"> 
+  <link href={{ asset('css/sb-admin-2.css') }} rel="stylesheet">  
+  <link href={{ asset('css/login.css') }} rel="stylesheet">  
   <!-- Fin -->
-
+  
+ 
 
    <!-- External link -->
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -32,11 +35,10 @@
      }
  </style> 
 </head>
-<body id="page-top">
+<body>
     <div id ="app">
             <Main-App/>
     </div>         
-    @include('Layout.Foot.Footer')
     <script src="{{asset('/js/app.js')}}"></script>
 </body>
 </html>

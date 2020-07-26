@@ -1,6 +1,5 @@
 <template>
-<nav    v-if="$route.name != 'Login'"
-        class="navbar navbar_two text-white navbar-expand-lg fixed-top fixed-top-2">
+<nav class="navbar navbar_two text-white navbar-expand-lg fixed-top fixed-top-2">
         <div class="container">
                      <div class="form-inline">
                                 <div class="col-md-4 form-group">
@@ -13,8 +12,8 @@
                                 </select>    
                                 </div>
                                 <div class="col-md-3 form-group">
-                                        <label class="col-form-label" for="que_buscas">¿Qu&eacute; buscas? </label>                                
-                                <select class="select" v-model="$store.state.itemTipoMaquinaria" v-on:change="itemTipoMaquinaria($store.state.itemTipoMaquinaria)">
+                                   <label class="col-form-label" for="que_buscas">Qué buscas? </label>                                
+                                 <select class="select" v-model="$store.state.itemTipoMaquinaria" v-on:change="itemTipoMaquinaria($store.state.itemTipoMaquinaria)">
                                 <option v-for = "TipoMaquinaria in TipoMaquinaria" :key="TipoMaquinaria.Id_tipo_maquinaria"
                                 v-bind:value="TipoMaquinaria.Id_tipo_maquinaria">
                                 {{TipoMaquinaria.Tipo_maquinarias}}
@@ -40,11 +39,12 @@
 
           </div>
     </nav>
-    </template>
+</template>
 
 <script>
 
 export default {
+name :"Header_1",
         data(){
                 return{
                         Localidades:[],
@@ -54,15 +54,16 @@ export default {
                 }
         },
         mounted(){
+                
 
-                 axios.get('api/Localidad').then((Response)=>{
+                 axios.get('Localidad').then((Response)=>{
                      this.Localidades = Response.data;
-                     
+                     console.log(this.Localidades);
                 }).catch(function(error){
                         console.log(error);
                 });     
                 
-                 axios.get('api/AllTipoMaquinaria')
+                 axios.get('AllTipoMaquinaria')
                         .then((Response)=>{
                     
                         this.TipoMaquinaria = Response.data;

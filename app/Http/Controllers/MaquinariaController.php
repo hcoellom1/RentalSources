@@ -62,6 +62,7 @@ class MaquinariaController extends Controller
          $imagen                = $request->get('imagen');
          $imgNombre             = $request->get('imgNombre');
          $condicionesMaquinaria = $request->input('machineConditions');
+         $emailOwner            = $request->input('emailOwner');
          
          $DirImagen   = ('images/').$imgNombre;
 
@@ -79,18 +80,11 @@ class MaquinariaController extends Controller
                             "Id_tipo_maquinaria" => $Tipo,
                             "Horas_Minima" => 1,
                             "Imagen" => $DirImagen,
-                            "precioMes" => $PrecioMes,
-                            "precioSemana" => $PrecioSemana
+                            "precioHoraMes" => $PrecioMes,
+                            "precioHoraSemana" => $PrecioSemana,
+                            "Correo_Electronico" => $emailOwner
          ]);
-                         
-            
-         /*'insert into maquinarias (Nombre_Maquinaria, Descripcion_Maquinaria, Disponibilidad,
-                                    Precio_x_Hora,Operacion,Latitud,Longitud,Estado,
-                                    Id_Localidad,Identidad,Id_tipo_maquinaria,Horas_Minima,Imagen)
-                                    values(?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                    [$Nombre,$Descripcion,'SI',$Precio,$Accion,
-                                    0,0,'ACTIVO',$Localidad,0,$Tipo,1,$DirImagen]);*/
-        
+                 
         //For each conditions checked for new machine, store in table condicionesmaquinaria
         foreach($condicionesMaquinaria as $condition ){
             DB::insert('insert into condicionesmaquinaria (codigoCondicion,codigoMaquina)
@@ -127,9 +121,7 @@ class MaquinariaController extends Controller
                                ->whereIn('maquinarias.id_tipo_maquinaria',$TipoMaquinaria)
                                ->get();
       
-        return response()->json([
-            "Maquinaria" => $Maquinaria
-        ],200);
+        return ($Maquinaria);
         
     }
 

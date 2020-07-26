@@ -29,11 +29,11 @@
                                 </tr>
                                 <tr>
                                     <td>Número Solicitud</td>                                    
-                                    <td>{{datafactura[0].id_solicitud}}</td>
+                                    <td>{{idSolicitudGet}}</td>
                                 </tr>
                                 <tr>
                                     <td>Fecha de Solicitud</td>
-                                    <td>{{datafactura[0].fecha_registro}}</td>
+                                    <td>{{ fechaSolicitudGet }}</td>
                                 </tr>
                                 
                             </tbody>
@@ -56,18 +56,17 @@
                         <tbody>
                             <tr v-for = "Factura in datafactura" :key="Factura.Nombre_Maquinaria"
                                 v-bind:value="Factura.Nombre_Maquinaria">
-                                <td class="w-3">{{Factura.Nombre_maquinaria}}</td>                   
+                                <td class="w-3">{{Factura.Nombre_maquinaria}}</td>
                                 <td class="w-2">{{Factura.horas}}</td>
-                                <td class="w-3">{{$store.state.Moneda}}&nbsp;{{datafactura[0].Subtotal/Factura.horas}}</td>
-                                <!--<td class="w-3">{{$store.state.Moneda}}&nbsp;{{Factura.Precio_x_Hora}}</td>!-->                                
-                                <td class="w-4">{{$store.state.Moneda}}&nbsp;{{Factura.horas * (datafactura[0].Subtotal/Factura.horas)}}</td>
-                                <!-- <td class="w-4">{{$store.state.Moneda}}&nbsp;{{Factura.horas * Factura.Precio_x_Hora}}</td> !-->
+                                <td class="w-3">{{$store.state.Moneda}}&nbsp;{{ Factura.precioHora }}</td>
+                                <td class="w-4">{{$store.state.Moneda}}&nbsp;{{ Factura.horas * Factura.precioHora }}</td>                                
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="3">Sub Total</td>
-                               <td>{{$store.state.Moneda}}&nbsp;{{datafactura[0].Subtotal}}</td>
+                                <td colspan="3">Sub Total</td>                                
+                                <td>{{$store.state.Moneda}}&nbsp;{{ subTotalCalculated }}</td>
+                                
                             </tr>
                             <tr>
                                 <td colspan="3">Descuento</td>
@@ -75,11 +74,11 @@
                             </tr>
                             <tr>
                                 <td colspan="3">ISV</td>
-                                <td>{{$store.state.Moneda}}&nbsp;{{ datafactura[0].Subtotal * 0.15 }}</td>
+                                <td>{{$store.state.Moneda}}&nbsp;{{ impuesto }}</td>
                             </tr>
                             <tr>
                                 <td colspan="3">Gran Total</td>
-                                <td>{{$store.state.Moneda}}&nbsp;{{datafactura[0].Subtotal * 1.15}}</td>
+                                <td>{{$store.state.Moneda}}&nbsp;{{ totalGeneral  }}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -91,10 +90,15 @@
 </template>
 <script type="text/javascript">
     export default {
-    name :"cart",
+    name :"confirmation",
      data(){
         return {
-            datafactura:[]
+            datafactura:[],
+            subTotalCalculated:0,
+            impuesto:0,
+            totalGeneral:0,
+            idSolicitudGet: ' ',
+            fechaSolicitudGet: ' '
         }
        },
        mounted(){
@@ -102,9 +106,17 @@
             if (this.$store.state.IdFactura != 0 ){
                     console.log(this.$store.state.IdFactura);                
                     axios.get('api/Solicitud/'+this.$store.state.IdFactura).then((Response)=>{
-                         this.datafactura = Response.data; 
-                         console.log(this.datafactura);   
+                         this.datafactura = Response.data;                          
+                         
+                         this.subTotalCalculated = this.datafactura[0].Subtotal;
+                         this.idSolicitudGet  =  this.datafactura[0].id_solicitud;
+                         this.fechaSolicitudGet = this.datafactura[0].fecha_registro;   
+                         
+                         this.impuesto = Number ( Number(this.subTotalCalculated) * 0.15);
+                         this.totalGeneral = Number( Number(this.impuesto) + Number(this.subTotalCalculated) ).toFixed(2);
+                         
                     }).catch(function(error){
+                         console.log('No hay datos en factura');
                          console.log(error);
                      });    
             }else{

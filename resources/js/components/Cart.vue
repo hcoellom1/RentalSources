@@ -85,15 +85,11 @@
                                        value="">
                             </td>
                                        
-                            <td class="text-right">{{$store.state.Moneda}}
-                                <!--    <input type="number" 
-                                       class="text-right" 
-                                       v-model.number="MaquinariaLocals.Precio_x_hora"
-                                       readonly> !-->
-                                <input type="number" 
+                            <td class="text-right">{{$store.state.Moneda}}                                
+                                  <input type="number" 
                                        class="text-right"                                        
-                                       v-model.number="MaquinariaLocals.Precio_x_hora"                                       
-                                       readonly>
+                                       v-model.number="precioHoraRow[index]"
+                                       readonly> 
                             </td>                              
                             <td class="text-right">{{$store.state.Moneda}}
                                 <input  type="number" 
@@ -108,29 +104,26 @@
                                 <i class="fa fa-trash"></i>
                                 </button>
                             </td>
-                         </tr> 
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>                                              
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>                            
-                            <td class="text-right"><strong>Total</strong></td>
-                            <td class="text-right"><strong>{{$store.state.Moneda}}&nbsp;{{total}}</strong></td>
-                            <td></td>
-                        </tr>
+                         </tr>                        
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-right" colspan="3"><strong>Sub Total</strong></td>                            
+                            <td class="text-right"><strong>{{$store.state.Moneda}}&nbsp;{{Number (Number(subTotalGeneral)).toFixed(2)}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right" colspan="3"><strong>Descuento</strong></td>                            
+                            <td class="text-right"><strong>{{$store.state.Moneda}}&nbsp;0</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right" colspan="3"><strong>ISV</strong></td>                            
+                            <td class="text-right"><strong>{{$store.state.Moneda}}&nbsp;{{ Number( Number(subTotalGeneral) * 0.15 ).toFixed(2)  }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right" colspan="3"><strong>Total</strong></td>                            
+                            <td class="text-right"><strong>{{$store.state.Moneda}}&nbsp;{{ Number( Number(subTotalGeneral) * 1.15).toFixed(2)  }}</strong></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -202,8 +195,6 @@ export default {
                  .then((Response)=>{                         
                      // se almacena la informacion en un objeto de maquinariaLocal                 
                     this.MaquinariaLocal=Response.data;   
-                    console.log(Response.data);
-                   
                 }).catch(function(error){
                     console.log(error);
                 });
@@ -214,8 +205,7 @@ export default {
     },
     computed:{        
         subtotalRow(){
-                return this.MaquinariaLocal.map((MaquinariaLocals)=>{
-                    //return Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
+                return this.MaquinariaLocal.map((MaquinariaLocals)=>{                    
 
                     if(MaquinariaLocals.Horas_minima <= 44){
                        return Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
@@ -228,7 +218,6 @@ export default {
                 });
             },
         precioHoraRow(){
-
             return this.MaquinariaLocal.map((MaquinariaLocals)=>{
                 if(MaquinariaLocals.Horas_minima <= 44){
                     return Number(MaquinariaLocals.Precio_x_hora);
@@ -240,7 +229,7 @@ export default {
             });           
                 
         },
-        total() {
+        subTotalGeneral() {
           return this.MaquinariaLocal.reduce((total,MaquinariaLocals) => {
 
             if(MaquinariaLocals.Horas_minima <= 44){
@@ -251,7 +240,6 @@ export default {
                 return total + Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.precioHoraMes);
             }
 
-            //return total + (MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
           }, 0);
         }
             
@@ -270,8 +258,8 @@ export default {
                                    'Maquinaria Eliminada',
                                    'success')
 
-                this.$store.commit('removeFromCart',idmaquinariaremove);
-                this.MaquinariaLocal.splice(index,1);
+                        this.$store.commit('removeFromCart',idmaquinariaremove);
+                        this.MaquinariaLocal.splice(index,1);
                     }
                 });
             },
@@ -282,10 +270,8 @@ export default {
                      this.Telefono &&
                      this.Email &&                    
                      this.Direccion)
-                     {
-                         console.log(this.MaquinariaLocal);
-                        //0this.GuardarFormulario();                     
-                        
+                     {                         
+                        this.GuardarFormulario();                        
                      }
 
                      this.errors=[];
@@ -331,19 +317,13 @@ export default {
                     Maquinarias : JSON.stringify(this.MaquinariaLocal)                    
                 }).then((response)=>{
                     console.log(this.MaquinariaLocal);
-                    this.$store.state.IdFactura = response.data;                                        
-                    this.$store.commit('DeleteLocalStorage'); //limpio el localStorage (carrito)
-                    this.$router.push({name:'Confirmation'});                    
-                    
+                    this.$store.state.IdFactura = response.data;    
+                    this.$store.commit('DeleteLocalStorage'); //limpio el localStorage (carrito)                
+                    this.$router.push({name:'Confirmation'});       
                 }).catch(function(error){
                     console.error(error);
                 });
              
-            /* 
-             console.log(this.$store.state.IdFactura);*/
-                    //this.$router.push({name:'GenerarFactura',params:{idFactura:Response.data}});                   
-          /*  this.$router.push({name:'Factura'});*/
-                  
                
             },
 
