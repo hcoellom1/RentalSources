@@ -1,21 +1,24 @@
 <template>
     
-    <div class="container-fluid">
+    <div class="container-fluid form_stlye">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-          <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+          <h1 class="h3 mb-2 text-gray-800">Mi Maquinaria</h1>
+          <p class="mb-4"> 
+            Aquí se muestra todo su maquinaria registrada.
+          </p>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Detalles de Maquinaria</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                  <div class="row"><div class="col-sm-12 col-md-6"
-                  ><div class="dataTables_length" id="dataTable_length">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                    <div class="dataTables_length" id="dataTable_length">
                     <label>Show <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
                       <option value="10">10</option>
                       <option value="25">25</option>
@@ -23,7 +26,7 @@
                       <option value="100">100</option>
                       </select> entries
                       </label>
-                      </div>
+                    </div>
                       </div>
                       <div class="col-sm-12 col-md-6">
                         <div id="dataTable_filter" class="dataTables_filter">
@@ -43,7 +46,7 @@
 <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 129px;">Disponible Para</th>
 <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 120px;">Precio x Hora</th>
 <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 110px;">Precio x Hora | Semana</th>
-<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 110px;">Precio x Mes | Semana</th>
+<th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 110px;">Precio x Hora | Mes</th>
 </tr>
   </thead>                  
         <tbody>
@@ -54,8 +57,8 @@
             <td>{{MaquinariaLocals.Nombre_localidad}}</td>
             <td>{{MaquinariaLocals.Operacion}}</td>
             <td>{{MaquinariaLocals.Precio_x_Hora}}</td>            
-            <td>test</td>
-            <td>test</td>
+            <td>{{MaquinariaLocals.precioHoraSemana}}</td>
+            <td>{{MaquinariaLocals.precioHoraMes}}</td>
           </tr>
      </tbody>
     </table>
@@ -94,15 +97,18 @@ export default {
     name: 'MyMaquinaria',
     data(){
         return {
-            MyMaquinaria:[]
+            MyMaquinaria:[],
+            email:''
         }
     },
     mounted(){
-        axios.get('MyMaquinaria').then((Response)=>{
-                     this.MyMaquinaria = Response.data;     
-                     console.log(this.MyMaquinaria);
+
+        this.email = this.$auth.user().email;        
+        axios.get('MyMaquinaria/' + this.email)
+                .then((Response)=>{                      
+                     this.MyMaquinaria = Response.data;                     
               }).catch(function(error){
-                      console.log(error);
+                    console.log('error en MyMaquinaria' + error);
               });
     }
 }

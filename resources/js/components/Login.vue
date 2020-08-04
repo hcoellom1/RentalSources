@@ -6,12 +6,18 @@
 				<img src="storage/images/Logo_Rental.png" class="logo">
 			</div>
 			<div class="col-md-8 col-xs-12 col-sm-12 login_form">
+
+        <div class="alert alert-danger" v-if="has_error && !success">
+                <p v-if="error == 'registration_validation_error'">Validation Errors.</p>
+                <p v-else>El usuario no existe</p>
+        </div>
+
 				<div class="container-fluid">
 					<div class="row">
 						<h2>Iniciar Sesión</h2>
 					</div>
 					<div class="row">
-						<form autocomplete="off" @submit.prevent="login" method="post">
+						<!--<form autocomplete="off" @submit.prevent="login" method="post"> !-->
                     <div class="form-group">
                         <label for="email">Correo Electrónico</label>
                         <input type="email" id="email" class="form__input" placeholder="user@example.com" v-model="correo" required>
@@ -20,8 +26,8 @@
                         <label for="password">Contraseña</label>
                         <input type="password" id="password" class="form__input" v-model="contrasenia" required>
                     </div>
-                    <button type="submit" class="btn_entrar">Entrar</button>
-                </form>
+                    <button type="submit" @click="login()" class="btn_entrar" >Entrar</button>
+              <!--  </form>!-->
 					</div>
 					<div class="row">
 						<p>¿No tienes una cuenta? 
@@ -72,6 +78,7 @@
             
           },
           error: function(error) {            
+            console.log('cagada:' + error);
             app.has_error = true
           },
           rememberMe: true,

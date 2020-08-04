@@ -1,9 +1,13 @@
 <template>
   
   <div>
+
+    
+
     <transition>
       <router-view :key="$route.fullPath" class="view one"></router-view>
     </transition>            
+    
   </div>
 
 </template>
@@ -20,7 +24,7 @@ export default {
                 Footer
                },
     mounted() {
-        const anchor = this.$router.currentRoute.hash;
+      const anchor = this.$router.currentRoute.hash;
       this.$nextTick(() => {
         if (anchor && document.querySelector(anchor)) {
           location.href = anchor;

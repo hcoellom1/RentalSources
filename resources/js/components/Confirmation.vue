@@ -105,7 +105,7 @@
             
             if (this.$store.state.IdFactura != 0 ){
                     console.log(this.$store.state.IdFactura);                
-                    axios.get('api/Solicitud/'+this.$store.state.IdFactura).then((Response)=>{
+                    axios.get('Solicitud/'+this.$store.state.IdFactura).then((Response)=>{
                          this.datafactura = Response.data;                          
                          
                          this.subTotalCalculated = this.datafactura[0].Subtotal;

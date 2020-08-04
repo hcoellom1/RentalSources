@@ -32,7 +32,8 @@ Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 
 //axios.defaults.baseURL = 'http://127.0.0.1:8000';
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api/'
+axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
+//axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api/`
 Vue.use(VueAuth, auth)
 
 //Vue.component('Nav-Inicial', require('./components/Nav/Menu_Inicial.vue')); 

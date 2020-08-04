@@ -19,7 +19,7 @@
                                 {{TipoMaquinaria.Tipo_maquinarias}}
                                 </option>          
                                 </select>  
-                                    </div>
+                                    </div>      
                             <div class="col-md-3 form-group">
                                     <label class="col-form-label" for="que_buscas">¿Qué deseas? </label>
                                     <select class="select" id="select_buscas" data-style="btn-inverse">
@@ -27,14 +27,11 @@
                                             <option value="Camion"> Comprar</option>
                                         </select>     
                                 </div>
-                          <router-link :to="{name:'Products',
-                                        query:{idLocalidad:$store.state.itemLocalidad,
-                                               idTipomaquinaria:$store.state.itemTipoMaquinaria}}" >
+                          <router-link :to="{name:'Products', 
+                                            query:{idLocalidad:$store.state.itemLocalidad,
+                                                   idTipomaquinaria:$store.state.itemTipoMaquinaria}}" >
                             <button type="button" class="btn btn-warning text-white btn-sm">Buscar</button>
-                            </router-link> 
-                            <!-- <router-link :to="`/Products/${this.selectLocalidad}`">
-                            <button type="button" class="btn btn-warning text-white btn-sm">Buscar</button>
-                            </router-link> !-->
+                            </router-link>                             
                     </div>
 
           </div>
@@ -43,6 +40,9 @@
 
 <script>
 
+/*
+                                           
+                                               */
 export default {
 name :"Header_1",
         data(){
@@ -53,21 +53,18 @@ name :"Header_1",
                         selectTipoMaquinaria:''
                 }
         },
-        mounted(){
-                
-
-                 axios.get('Localidad').then((Response)=>{
-                     this.Localidades = Response.data;
-                     console.log(this.Localidades);
+        mounted()
+                {
+                 axios.get('/Localidad')
+                        .then((Response) =>{
+                        this.Localidades = Response.data;                     
                 }).catch(function(error){
-                        console.log(error);
+                        console.log('Error grave en Header_1');
                 });     
                 
-                 axios.get('AllTipoMaquinaria')
-                        .then((Response)=>{
-                    
-                        this.TipoMaquinaria = Response.data;
-                      
+                 axios.get('/AllTipoMaquinaria')
+                        .then((Response)=>{                    
+                        this.TipoMaquinaria = Response.data;                      
                 }).catch(function(error){
                         console.log(error);
                 });
@@ -77,13 +74,11 @@ name :"Header_1",
                 
 
                 itemLocalidad(id_localidad){
-                     this.$store.commit('SaveItemlocalidad',id_localidad); 
-                                         
+                     this.$store.commit('SaveItemlocalidad',id_localidad);                                          
                 },
 
                 itemTipoMaquinaria(Id_tipo_maquinaria){
-                     this.$store.commit('SaveitemTipoMaquinaria',Id_tipo_maquinaria); 
-                                         
+                     this.$store.commit('SaveitemTipoMaquinaria',Id_tipo_maquinaria);                                          
                 }
 
 

@@ -1,7 +1,9 @@
 <template>
 
-<div  style="margin-top:230px;">   <!--Inicio main--> 
-<div class="container" v-if="$store.state.cartCount > 0">  
+<div  >   <!--Inicio main--> 
+<Header/>
+<Header_1/>
+<div class="container" v-if="$store.state.cartCount > 0" style="margin-top:175px">  
  <div class="container mb-4 form">
   <div class ="row form-register"> <!-- Inicio Register-->
     <div class="col-12 form-detail-client">      
@@ -155,11 +157,21 @@
         </div>             
       </div>
  </div>
+ <Footer/>
 </div>
 </template>
 
 <script>
+import Header from "./Layout/Header.vue";
+import Header_1 from "./Layout/Header_1.vue";
+import Footer from "./Layout/Footer.vue";
 export default {
+    components:{
+        Header,
+        Header_1,
+        Footer
+    },
+
     name :"cart",
      data(){
         return {
@@ -180,7 +192,7 @@ export default {
         }
     },
     mounted(){
-            axios.get('api/Localidad').then((Response)=>{
+            axios.get('Localidad').then((Response)=>{
                 this.Localidades = Response.data;     
             }).catch(function(error){
                 console.log(error);
@@ -191,7 +203,7 @@ export default {
 
             if (this.storageMaquinaria != null) {
         // Se envian los ids de la maquinaria para obtener la otra información        
-                 axios.post('api/ProductsCart',{data:this.storageMaquinaria})
+                 axios.post('ProductsCart',{data:this.storageMaquinaria})
                  .then((Response)=>{                         
                      // se almacena la informacion en un objeto de maquinariaLocal                 
                     this.MaquinariaLocal=Response.data;   
@@ -306,7 +318,7 @@ export default {
 
              GuardarFormulario(){                 
               const idfactura=0;
-              axios.post('api/SaveCart',{
+              axios.post('SaveCart',{
                     Nombres: this.Nombres,
                     Apellidos :this.Apellidos,
                     Telefono:  this.Telefono,

@@ -1,9 +1,10 @@
 import VueRouter from 'vue-router';
 
 import Home from './components/home.vue';
-import ProductsList from './components/Products/Products.vue';
+import Products from './components/Products/Products.vue';
 import Cart from './components/Cart.vue';
 import Factura from './components/Factura.vue';
+import Confirmation from './components/Confirmation.vue';
 import PaginaNoEncontrada from './components/NoEncontrada.vue';
 import Mantenimiento from './components/Mantenimiento.vue';
 import Login from './components/Login.vue';
@@ -12,7 +13,6 @@ import Dashboard from './components/Dashboard.vue';
 import MyMaquinaria from './components/MyMaquinaria.vue';
 import { stubFalse } from 'lodash';
 
-
 //import PageTwo from './views/PageTwo.vue';
 
 let routes = [
@@ -20,26 +20,20 @@ let routes = [
       path: '/',
       name: 'Home',
       component: Home
-  },
-  {
-      path: '/Products/',
-      name: 'Products',
-      component: ProductsList,
-      props:true,
-      meta:{
-        auth:false
-      }
-  },
+  },  
   {
       path: '/Cart',
       name: 'Cart',
-      component: Cart,
-      props:true,
-      meta:{
-        auth:false
-      }
+      component:Cart  ,
+      props:true
   },
   {
+      path: '/products',
+      name: 'Products',
+      component: Products,
+      props:true
+  },
+  /*{
       path: '/Factura',
       name:'Factura',
       component: Factura,
@@ -47,6 +41,12 @@ let routes = [
       meta:{
         auth:false
       }
+  },*/
+  {
+    path: '/Confirmation',
+    name:'Confirmation',
+    component: Confirmation,
+    props:true
   },    
   {
     path: '/Login',
@@ -58,10 +58,8 @@ let routes = [
     path: '/Register',
     name:'Register',
     component: Register,
-    meta:{
-      auth:false
-    }
-  },
+    
+  },  
   {
     path: '/Dashboard/',
     name:'Dashboard',
@@ -79,7 +77,7 @@ let routes = [
       components:{
         b: MyMaquinaria
       } 
-    }],
+    }], 
     meta:{
       auth:true
     }

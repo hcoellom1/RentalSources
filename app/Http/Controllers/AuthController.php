@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use App\User;
 use Auth;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\Validator;
+//use Illuminate\Support\Facades\Validator;
 
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 //use Validator, DB, Hash, Mail;
-use DB, Hash, Mail;
+use Validator, DB, Hash, Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Str;
@@ -31,7 +31,7 @@ class AuthController extends Controller
         $credentials = $request->only('name','email','password');
 
         $rules = [
-            'name'  => 'required|max:255',
+            'name'  => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users'
         ];
 
@@ -53,16 +53,15 @@ class AuthController extends Controller
         DB::table('user_verifications')->insert(['user_id'=>$user->id,
                                                  'token'=>$verification_code]);
           
-        /*
-        $subject = "Please verify your email address.";
-        Mail::send('email.verify', ['name' => $name, 'verification_code' => $verification_code],
+        
+        $subject = "Por favor valide su dirección de correo.";
+        Mail::send('emails.verify', ['name' => $name, 'verification_code' => $verification_code],
         function($mail) use ($email, $name, $subject){
-            $mail->from(getenv('FROM_EMAIL_ADDRESS'), "From User/Company Name Goes Here");
+            $mail->from(getenv('MAIL_USERNAME'), "Rental Maquinaria y Equipo");
             $mail->to($email, $name);
             $mail->subject($subject);
-        });
-                      
-        */
+        });                      
+        
         return response()->json(['success'=> true, 
                                  'message'=> 'Thanks for signing up! Please check your email to complete your registration.']);
 
@@ -110,14 +109,17 @@ class AuthController extends Controller
   {
       $credentials = $request->only('email', 'password');      
       $rules = [
+          //'email' => 'required|email|exists:users,email',
           'email' => 'required|email',
           'password' => 'required',
       ];
 
+            
       $validator = Validator::make($credentials, $rules);
 
       if($validator->fails()) {      
-          return response()->json(['success'=> false, 'error'=>'login error'], 401);
+          return response()->json(['success' => false, 
+                                   'error' => $validator->messages()]);          
       }
       
       $credentials['is_verified'] = 1;

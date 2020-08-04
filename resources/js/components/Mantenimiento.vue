@@ -1,7 +1,15 @@
 <template>    
     <div class="container form_stlye">
         <h1 class="h3 mb-2 text-gray-800">Registro de Nueva Maquinaria</h1>
-        <p class="mb-4">Ingrese toda la información requerida para poder registrar la maquinaria.</p>        
+        <p class="mb-4">Ingrese toda la información requerida para poder registrar la maquinaria.</p>       
+
+        <p v-if="errors.length" id="ErrorsLines">
+            <b> Favor ingresar los siguientes campos: </b>
+            <ul>
+                <li v-for ="error in errors" :key="error">{{error}}</li>
+            </ul>
+        </p>
+
         <fieldset>
             <!-- Text input-->
             <div class="form-group row">
@@ -17,7 +25,7 @@
                 </div>
 
                 <div class="col-sm-6 mb-3 mb-sm-0">
-                    <label class="control-label" >Descripcion Maquinaria</label>     
+                    <label class="control-label" >Marca / Modelo</label>     
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input type="text" class="form-control" 
@@ -177,7 +185,7 @@
             <!-- Button -->
             <div class="text-center">      
                 <div class="col-sm-12"><br>
-                    <button @click="GuardarMaquinaria" 
+                    <button @click="ValidarFormulario" 
                             type="submit" 
                             class="btn btn-warning col-sm-8">Guardar Maquinaria<span class="glyphicon glyphicon-send"></span>
                     </button>
@@ -199,6 +207,7 @@ export default {
                         TipoMaquinaria:[],
                         Condiciones:[],
                         checkedConditions:[],
+                        errors :[],
                         ImgMaquinaria:'',
                         Nombre :'',
                         Descripcion:'',
@@ -232,6 +241,45 @@ export default {
                 };
                 reader.readAsDataURL(file);
             },
+            ValidarFormulario:function (e){
+                if (this.Nombre && 
+                     this.Descripcion &&                     
+                     this.vrTipoMaquinaria &&
+                     this.vrLocalidad &&           
+                     this.QueDesea)
+                     { 
+                         this.GuardarMaquinaria(); 
+                     }
+
+                     this.errors=[];
+
+                     if (!this.Nombre){
+                         this.errors.push('Nombre es requerido');
+                         window.scrollTo(0,'ErrorsLines');  
+                     }
+
+                     if (!this.Descripcion){
+                         this.errors.push('La descripción es requerida');
+                         window.scrollTo(0,'ErrorsLines');                         
+                     }
+
+                     if (!this.vrTipoMaquinaria){
+                         this.errors.push('El tipo de maquinaria es requerido');
+                         window.scrollTo(0,'ErrorsLines');  
+                     }
+
+                      if (!this.vrLocalidad){
+                         this.errors.push('La localidad es requerida');
+                         window.scrollTo(0,'ErrorsLines');  
+                     }
+                    
+                     if (!this.QueDesea){
+                         this.errors.push('La acción para la cual está disponible la maquinaria es requerida');
+                         window.scrollTo(0,'ErrorsLines');  
+                     }
+
+                     e.preventDefault();
+            },
             GuardarMaquinaria(){
                 axios.post('image/SaveMaquinaria',{
                     imagen: this.ImgMaquinaria,
@@ -248,10 +296,20 @@ export default {
                     emailOwner:this.email
                 }).then((response)=>{
                     console.log(response);
+                    this.clearFields();
                     this.saved = true;
                 }).catch(function(error){
                         console.log(error);
                 });
+            },
+            clearFields:function (e){                
+                this.ImgMaquinaria = '';
+                this.imgNombre = '';
+                this.Nombre = '';
+                this.Descripcion = '';
+                this.Precio_x_Hora = 0;
+                this.Precio_x_mes = 0;
+                this.Precio_x_semana = 0;
             }
         },
         mounted(){

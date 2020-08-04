@@ -1,5 +1,8 @@
 <template  >
-<div class="main-products" >
+<div>
+    <Header/>
+    <Header_1/>   <!--Inicio main--> 
+<div class="main-products" style="margin-top:175px">
 <div class="row"> 
   <div class="col-md-2 left-nav">
      <div class='Mod-view text-right'>
@@ -56,7 +59,7 @@
             </div>         
           <div class ='product-shop'>
                 <div class="price-wrap h4">
-                  <span class="price">{{$store.state.Moneda}}&nbsp;{{Maquinarias.Precio_x_Hora}} </span>
+                    <span class="price">{{$store.state.Moneda}}&nbsp;{{Maquinarias.Precio_x_Hora}} </span>
                   </div> <!-- info-price-detail // -->
                   <p class="text-warning">precio/hora</p>
                   <br>
@@ -66,8 +69,8 @@
                      Añadir 
                     </a>
                     <a  class="btn btn-secondary" @click="MostrarDetalles(Maquinarias.id_maquinaria)">
-                       Detalles
-                       </a>
+                      Detalles
+                    </a>
                   </p>
              </div>   <!--Fin Product Shop -->  
         </div><!-- Fin Product Body !-->        
@@ -81,7 +84,7 @@
           <div class ='product col-md-12'> <!--Inicio Product -->
           <div class='row product-body'>
             <div class ='product-img col-sm-3'>
-              <img class='zoom' :src ="Maquinarias.imagen">
+              <img class='zoom' :src="Maquinarias.imagen">
             </div>
                 <div class ='product-detail col-sm-5'>
                    <div class='product-title'>
@@ -120,21 +123,21 @@
         </div>             
       </div>
 </div>
+</div>
 </div> <!-- Fin Row Details --> 
+
 <Footer/>
 </div> <!-- Main Product !-->
 
-
 </template>
-
 <script>
 
-import Header from "../Layout/Header.vue";
-import Header_1 from "../Layout/Header_1.vue";
-import Footer from "../Layout/Footer.vue";
-
+ import Header from "../Layout/Header.vue";
+ import Header_1 from "../Layout/Header_1.vue";
+ import Footer from "../Layout/Footer.vue";
 import { parse } from 'path';
 import { WSASERVICE_NOT_FOUND } from 'constants';
+
 export default {
   name:'Products',
   components:{
@@ -143,14 +146,13 @@ export default {
         Footer
   },
   mounted(){
-      axios.post('Products',{
-                            localidad:this.BuscarLocalidades,
-                            tipoMaquinaria:this.BuscarTipoMaquinaria})
+      axios.post('Products',{localidad:this.BuscarLocalidades,
+                                 tipoMaquinaria:this.BuscarTipoMaquinaria})
                     .then((response) => {
-                        this.Maquinarias = response.data.Maquinaria;
-                        console.log(this.Maquinarias);
+                        console.log(response.data);
+                        this.Maquinarias = response.data;
                     }).catch(function(error){
-                      console.log(error);
+                          console.log('error getting machines');
                     });
   },
   created(){
@@ -211,12 +213,12 @@ export default {
             }
          
       },
+        MostrarDetalles(idMaquinaria){          
+            axios.get('MachineConditions/'+ idMaquinaria)
+                 .then((response) => {this.Conditions = response.data.Conditions;  
+                     console.log('exitososoooo');
+                     console.log(response.data);
 
-      // Looking for rental machine conditions
-      MostrarDetalles(idMaquinaria){          
-          axios.get('MachineConditions/'+ idMaquinaria)
-                     .then((response) => {this.Conditions = response.data.Conditions;  
-                                          
                      let detailConditions = '<ul>';
                      let countConditions = this.Conditions.length;
 
@@ -234,9 +236,8 @@ export default {
                      }).catch(function(error){
                        console.log(error);
                      });
-              
-    }      
-
+        }
+      
   },
   data(){
     
@@ -251,7 +252,7 @@ export default {
           BuscarAccion:[],
           Message:'',
           layout:'grid',
-          Moneda:this.$store.state.Moneda, 
+          Moneda:this.$store.state.Moneda,
           Conditions:[]
     }
       

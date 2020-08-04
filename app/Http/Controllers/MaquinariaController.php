@@ -142,4 +142,24 @@ class MaquinariaController extends Controller
     {
         
     }
+
+    public function showMyMaquinaria($mailOwner)
+    {
+    
+        $Maquinaria = Maquinaria::select('maquinarias.id_maquinaria',
+                                         'maquinarias.Nombre_maquinaria',
+                                         'maquinarias.Descripcion_maquinaria',
+                                         'tipo_maquinarias.Tipo_maquinarias',
+                                         'maquinarias.Operacion',
+                                         'localidads.Nombre_localidad',
+                                         'maquinarias.Precio_x_Hora',
+                                         'maquinarias.precioHoraSemana',
+                                         'maquinarias.precioHoraMes')                               
+                               ->join('localidads','maquinarias.id_localidad','=','localidads.Id_localidad')
+                               ->join('tipo_maquinarias','maquinarias.Id_tipo_maquinaria','=','tipo_maquinarias.Id_tipo_maquinaria')
+                               ->where('maquinarias.Correo_Electronico',$mailOwner)                               
+                               ->get();                               
+                 
+        return($Maquinaria);
+    }
 }

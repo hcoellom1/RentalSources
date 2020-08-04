@@ -6,15 +6,15 @@
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3"> {{ $auth.user().name }}  </div>
+        <div class="sidebar-brand-text mx-3"> {{ $auth.user().name }}   </div>
       </a>
 
-      <!-- Divider -->
+      <!-- Divider {{ $auth.user().name }} -->
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="#">
+        <a class="nav-link" >
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -25,24 +25,20 @@
         Maquinaria
       </div>
 
-      <!-- Nav Item - Pages Collapse Menu -->
+      <!-- Nav Item - Pages Collapse Menu <i class="fas fa-fw fa-cog"></i> -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <router-link class="collapsed"
+      
+          <router-link class="nav-link js-scroll-trigger"
                to="Mantenimiento">
                 Agregar Maquinaria
                </router-link>
-        </a>
+        
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <router-link class="collapsed"
+                 <router-link class="nav-link js-scroll-trigger"
                :to="{name:'MyMaquinaria'}">
                 Maquinaria Registradas
-               </router-link>
-        </a>
+               </router-link>      
       </li>
 
       <!-- Divider -->

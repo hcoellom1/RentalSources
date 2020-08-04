@@ -13,25 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
+
 Route::prefix('auth')->group(function () {
  
     Route::post('register','AuthController@register');
     Route::post('login','AuthController@login');
     Route::get('refresh','AuthController@refresh');
-
+ 
     Route::group(['middleware' => 'auth:api'], function(){
         Route::get('user', 'AuthController@user');
         Route::post('logout', 'AuthController@logout');
     });
-  
+ 
 });
+
   
-
-//get Route
-//
-
-
-Route::post('register','AuthController@register');
 
 Route::get('Localidad', 'LocalidadController@index');
 
@@ -45,7 +41,7 @@ Route::get('MachineConditions/{idMachine}', 'MachineConditionsController@show');
 
 Route::get('Conditions', 'ConditionsController@show');
 
-Route::get('MyMaquinaria', "MaquinariaController@store");
+Route::get('MyMaquinaria/{mailOwner}', "MaquinariaController@showMyMaquinaria");
 
 
 //post Route
@@ -62,8 +58,6 @@ Route::post('image/SaveMaquinaria', 'MaquinariaController@store');
 
 /*
 Route::group(['middleware' => 'jwt.auth'], function ($router) {
-    
-    
     //Route::post('customers/new', 'CustomersController@new');
 });
 */

@@ -12,5 +12,9 @@ mix.disableNotifications();
  |
  */
 
+ module.exports = {
+     mode:'production'
+ }
+
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');

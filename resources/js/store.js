@@ -9,7 +9,7 @@ let store ={
     state: {
         cart:cart ? JSON.parse(cart):[],
         cartCount:cartCount ? parseInt(cartCount):0,
-        itemLocalidad:itemLocalidad ? itemLocalidad:[],
+        itemLocalidad:itemLocalidad ? JSON.parse(itemLocalidad):[],
         itemTipoMaquinaria:itemTipoMaquinaria ? JSON.parse(itemTipoMaquinaria):[],
         Moneda:Moneda ? Moneda: '$.',
         IdFactura:IdFactura ? parseInt(IdFactura):0,
@@ -56,7 +56,7 @@ let store ={
             /*this.commit('saveCartLocal');*/  
             }
         },
-        SaveItemlocalidad(state,itemLocalidad){
+        SaveItemlocalidad(state,itemLocalidad){        
             localStorage.setItem("itemLocalidad",itemLocalidad);
         },
         SaveitemTipoMaquinaria(state,itemTipoMaquinaria){

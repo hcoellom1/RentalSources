@@ -8,36 +8,43 @@
           </button>
           <div class="collapse navbar-collapse" id=" ">
             <ul class="navbar-nav ml-auto">
-               <li class="nav-item">
-               <router-link class="nav-link js-scroll-trigger"
-               :to="{name:'Login',hash:''}">
-                Login
-               </router-link>
-              </li>
+              
               <li class="nav-item">
                <router-link class="nav-link js-scroll-trigger"
                :to="{name:'Home',hash:'#Renta'}">
                 Renta
                </router-link>
               </li>
+
               <li class="nav-item">
                 <router-link class="nav-link js-scroll-trigger"
                :to="{name:'Home',hash:'#Compra'}">
                 Compra
                </router-link>
               </li>
+
               <li class="nav-item">
                 <router-link class="nav-link js-scroll-trigger"
                :to="{name:'Home',hash:'#Nosotros'}">
                 Nosotros
                </router-link>
               </li>
+
               <li class="nav-item">
-             <router-link class="nav-link js-scroll-trigger"
+              <router-link class="nav-link js-scroll-trigger"
                :to="{name:'Home',hash:'#Contacto'}">
                 Contacto
                </router-link>
               </li>
+
+               <li class="nav-item">
+                  <router-link v-if="$auth.user() != null " class="nav-link js-scroll-trigger"
+                                :to="{name:'Dashboard',hash:''}">{{$auth.user().name}}</router-link>
+
+                  <router-link v-else class="nav-link js-scroll-trigger"
+                                        :to="{name:'Login',hash:''}">Login</router-link>               
+              </li>
+
               <li class="nav-item">
               <router-link to="/Cart">             
                   <a class="nav-link js-scroll-trigger" href="">
@@ -45,7 +52,8 @@
                     <span class='CarritoCount'>( {{ $store.state.cartCount }} )</span>
                   </a>
                 </router-link>
-                </li>              
+                </li>
+
             </ul>
           </div>
         </div>
