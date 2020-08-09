@@ -43,6 +43,8 @@ Route::get('Conditions', 'ConditionsController@show');
 
 Route::get('MyMaquinaria/{mailOwner}', "MaquinariaController@showMyMaquinaria");
 
+Route::get('MachineNames', "MaquinariaController@getMachinesByName");
+
 
 //post Route
 Route::post('Products', 'MaquinariaController@show');
@@ -52,12 +54,3 @@ Route::post('ProductsCart', 'MaquinariaController@getMaquinaria');
 Route::post('SaveCart','SolicitudController@Store');
 
 Route::post('image/SaveMaquinaria', 'MaquinariaController@store');
-
-
-
-
-/*
-Route::group(['middleware' => 'jwt.auth'], function ($router) {
-    //Route::post('customers/new', 'CustomersController@new');
-});
-*/

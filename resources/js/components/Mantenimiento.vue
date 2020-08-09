@@ -14,13 +14,16 @@
             <!-- Text input-->
             <div class="form-group row">
                 <div class="col-sm-6 mb-3 mb-sm-0">
-                    <label class="control-label">Nombre Maquinaria</label>        
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input  type="text" class="form-control" 
-                                    v-model="Nombre" 
-                                    placeholder="Nombre"
-                                    value="" />
+                    <label class="control-label">Nombre Maquinaria</label>
+                         <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+                            <select class="form-control selectpicker" v-model="vrMachineName">
+                                <option v-for = "MachineNames in machineNames" 
+                                        :key="MachineNames.idNombreMaquina"
+                                        v-bind:value="MachineNames.idNombreMaquina">
+                                        {{MachineNames.nombreMaquina}}
+                                </option>      
+                            </select>
                         </div>
                 </div>
 
@@ -141,7 +144,11 @@
                         <div class="inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input  name="HorasMinimas" placeholder="Horas Minimas" class="form-control"  type="number" min=1>
+                                <input  v-model="vrHorasMinimas" 
+                                        placeholder="Horas Minimas" 
+                                        class="form-control"  
+                                        type="number" 
+                                        min=1>
                             </div>
                         </div>
                 </div>
@@ -207,6 +214,7 @@ export default {
                         TipoMaquinaria:[],
                         Condiciones:[],
                         checkedConditions:[],
+                        machineNames:[],
                         errors :[],
                         ImgMaquinaria:'',
                         Nombre :'',
@@ -219,7 +227,9 @@ export default {
                         QueDesea:'',
                         imgNombre :'',
                         saved:false,
-                        email:''
+                        email:'',
+                        vrMachineName:'',
+                        vrHorasMinimas:1
 
                 }
         },
@@ -242,18 +252,19 @@ export default {
                 reader.readAsDataURL(file);
             },
             ValidarFormulario:function (e){
-                if (this.Nombre && 
+                if (this.vrMachineName && 
                      this.Descripcion &&                     
                      this.vrTipoMaquinaria &&
                      this.vrLocalidad &&           
-                     this.QueDesea)
+                     this.QueDesea &&
+                     this.vrHorasMinimas)
                      { 
                          this.GuardarMaquinaria(); 
                      }
 
                      this.errors=[];
 
-                     if (!this.Nombre){
+                     if (!this.vrMachineName){
                          this.errors.push('Nombre es requerido');
                          window.scrollTo(0,'ErrorsLines');  
                      }
@@ -278,6 +289,11 @@ export default {
                          window.scrollTo(0,'ErrorsLines');  
                      }
 
+                     if(!this.vrHorasMinimas){
+                         this.errors.push('Las horas mínimas por día deben ser mayor que 0');
+                         window.scrollTo(0,'ErrorsLines');  
+                     }
+
                      e.preventDefault();
             },
             GuardarMaquinaria(){
@@ -293,7 +309,9 @@ export default {
                     localidadMaquinaria:this.vrLocalidad,
                     queDeseaMaquinaria:this.QueDesea,
                     machineConditions:this.checkedConditions,
-                    emailOwner:this.email
+                    emailOwner:this.email,
+                    machineName:this.vrMachineName,
+                    horasMinimas: this.vrHorasMinimas
                 }).then((response)=>{
                     console.log(response);
                     this.clearFields();
@@ -339,6 +357,18 @@ export default {
                 }).catch(function(error){
                         console.log(error);
                 });
+
+                axios.get('MachineNames')
+                        .then((Response)=>{  
+                        this.machineNames = Response.data;                        
+                }).catch(function(error){
+                        console.log(error);
+                });
+
+
+
+
+                
         
         }
 

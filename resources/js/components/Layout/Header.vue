@@ -38,11 +38,16 @@
               </li>
 
                <li class="nav-item">
-                  <router-link v-if="$auth.user() != null " class="nav-link js-scroll-trigger"
+                  <!-- <router-link v-if="$auth.user() != null " class="nav-link js-scroll-trigger"
                                 :to="{name:'Dashboard',hash:''}">{{$auth.user().name}}</router-link>
 
                   <router-link v-else class="nav-link js-scroll-trigger"
-                                        :to="{name:'Login',hash:''}">Login</router-link>               
+                                        :to="{name:'Login',hash:''}">Login</router-link>  !-->
+
+                  <router-link class="nav-link js-scroll-trigger"
+                                        :to="{name:'Login',hash:''}">Login</router-link> 
+
+                  
               </li>
 
               <li class="nav-item">

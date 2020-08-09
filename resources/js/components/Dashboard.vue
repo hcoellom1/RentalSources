@@ -63,7 +63,8 @@
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
         <li class="nav-item">
-        <a class="nav-link" href="#" @click.prevent="$auth.logout()">
+        <!-- <a class="nav-link" href="#" @click.prevent="$auth.logout()"> !-->
+        <a class="nav-link" href="#" @click="$auth.logout()">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Cerrar Sesión</span></a>
       </li>
@@ -91,3 +92,21 @@
     </div>
 </div>
 </template>
+
+
+<script>
+
+/*
+  export default {
+    name:'Dashboard',
+    methods:{
+       logout() {        
+          var app = this;
+          this.$auth.login();
+      }
+    }
+}
+
+*/
+
+</script>

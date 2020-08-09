@@ -2,7 +2,7 @@ let cart = localStorage.getItem('MaquinariaLocal');
 let cartCount = localStorage.getItem('MaquinariaCount');
 let itemLocalidad = localStorage.getItem('itemLocalidad');
 let itemTipoMaquinaria = localStorage.getItem('itemTipoMaquinaria');
-let Moneda = '$.';
+let Moneda = 'L.';
 let IdFactura = 0;
 
 let store ={
@@ -11,7 +11,7 @@ let store ={
         cartCount:cartCount ? parseInt(cartCount):0,
         itemLocalidad:itemLocalidad ? JSON.parse(itemLocalidad):[],
         itemTipoMaquinaria:itemTipoMaquinaria ? JSON.parse(itemTipoMaquinaria):[],
-        Moneda:Moneda ? Moneda: '$.',
+        Moneda:Moneda ? Moneda: 'L.',
         IdFactura:IdFactura ? parseInt(IdFactura):0,
     },
     mutations:{
@@ -51,9 +51,8 @@ let store ={
                 state.cartCount=state.cartCount-1;
                 
                 state.cart.splice(index,1);               
-            localStorage.setItem("MaquinariaLocal",JSON.stringify(state.cart));
-            localStorage.setItem("MaquinariaCount",state.cartCount);              
-            /*this.commit('saveCartLocal');*/  
+                localStorage.setItem("MaquinariaLocal",JSON.stringify(state.cart));
+                localStorage.setItem("MaquinariaCount",state.cartCount);            
             }
         },
         SaveItemlocalidad(state,itemLocalidad){        

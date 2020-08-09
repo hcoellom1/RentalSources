@@ -51,7 +51,6 @@ class MaquinariaController extends Controller
      *  */    
     public function store(Request $request)
     {                    
-         $Nombre                = $request->input('nombreMaquinaria');
          $Descripcion           = $request->input('descripcionMaquinaria');
          $Precio                = $request->input('precioHoraMaquinaria');
          $PrecioSemana          = $request->input('precioMaquinaSemana');
@@ -63,11 +62,12 @@ class MaquinariaController extends Controller
          $imgNombre             = $request->get('imgNombre');
          $condicionesMaquinaria = $request->input('machineConditions');
          $emailOwner            = $request->input('emailOwner');
+         $machineName           = $request->input('machineName');
+         $minimunHours          = $request->input('horasMinimas');
          
          $DirImagen   = ('images/').$imgNombre;
 
-         $idNewMachine = DB::table('maquinarias')->insertGetId([
-                            "Nombre_Maquinaria"=>$Nombre, 
+         $idNewMachine = DB::table('maquinarias')->insertGetId([                            
                             "Descripcion_Maquinaria"=>$Descripcion,
                             "Disponibilidad"=>'SI',
                             "Precio_x_Hora" => $Precio,
@@ -75,14 +75,14 @@ class MaquinariaController extends Controller
                             "Latitud" => 0,
                             "Longitud" => 0,
                             "Estado" => 'ACTIVO',
-                            "Id_Localidad" => $Localidad,
-                            "Identidad" => 0,
+                            "Id_Localidad" => $Localidad,                            
                             "Id_tipo_maquinaria" => $Tipo,
-                            "Horas_Minima" => 1,
+                            "Horas_Minima" => $minimunHours,
                             "Imagen" => $DirImagen,
                             "precioHoraMes" => $PrecioMes,
                             "precioHoraSemana" => $PrecioSemana,
-                            "Correo_Electronico" => $emailOwner
+                            "Correo_Electronico" => $emailOwner,
+                            "idNombreMaquina" => $machineName
          ]);
                  
         //For each conditions checked for new machine, store in table condicionesmaquinaria
@@ -109,14 +109,15 @@ class MaquinariaController extends Controller
         $TipoMaquinaria=($request->tipoMaquinaria);
         
         $Maquinaria = Maquinaria::select('maquinarias.id_maquinaria',
-                                                 'maquinarias.Nombre_maquinaria',
-                                                 'maquinarias.Precio_x_Hora',
-                                                 'maquinarias.precioHoraMes',
-                                                 'maquinarias.precioHoraSemana',
-                                                 'maquinarias.Descripcion_maquinaria',
-                                                 'localidads.Nombre_localidad',
-                                                 'maquinarias.imagen')                               
-                               ->join('localidads','maquinarias.id_localidad','=','localidads.Id_localidad')                              
+                                         'nombresmaquinarias.nombreMaquina',
+                                         'maquinarias.Precio_x_Hora',
+                                         'maquinarias.precioHoraMes',
+                                         'maquinarias.precioHoraSemana',
+                                         'maquinarias.Descripcion_maquinaria',
+                                         'localidads.Nombre_localidad',
+                                         'maquinarias.imagen')                               
+                               ->join('localidads','maquinarias.id_localidad','=','localidads.Id_localidad')     
+                               ->join('nombresmaquinarias', 'maquinarias.idNombreMaquina','=','nombresmaquinarias.idNombreMaquina')                         
                                ->whereIn('maquinarias.id_localidad',$Localidades)
                                ->whereIn('maquinarias.id_tipo_maquinaria',$TipoMaquinaria)
                                ->get();
@@ -143,11 +144,16 @@ class MaquinariaController extends Controller
         
     }
 
+    /**
+     * Select machines by owner
+     * @param mailOwner
+     * @return machines
+     */
     public function showMyMaquinaria($mailOwner)
     {
     
-        $Maquinaria = Maquinaria::select('maquinarias.id_maquinaria',
-                                         'maquinarias.Nombre_maquinaria',
+        $Maquinaria = Maquinaria::select('maquinarias.id_maquinaria',                                         
+                                         'nombresmaquinarias.nombreMaquina',
                                          'maquinarias.Descripcion_maquinaria',
                                          'tipo_maquinarias.Tipo_maquinarias',
                                          'maquinarias.Operacion',
@@ -157,9 +163,27 @@ class MaquinariaController extends Controller
                                          'maquinarias.precioHoraMes')                               
                                ->join('localidads','maquinarias.id_localidad','=','localidads.Id_localidad')
                                ->join('tipo_maquinarias','maquinarias.Id_tipo_maquinaria','=','tipo_maquinarias.Id_tipo_maquinaria')
+                               ->join('nombresmaquinarias', 'maquinarias.idNombreMaquina','=','nombresmaquinarias.idNombreMaquina')
                                ->where('maquinarias.Correo_Electronico',$mailOwner)                               
                                ->get();                               
-                 
+     
         return($Maquinaria);
+    }
+
+    /**
+     * Return types of machines by filter $type
+     * @param Type of machine
+     * @return All machines that matches with type
+     */
+    public function getMachinesByName(){
+        $machines = DB::table('nombresmaquinarias')                      
+                      ->select('nombresmaquinarias.idNombreMaquina','nombresmaquinarias.nombreMaquina')
+                      ->where([
+                                ['nombresmaquinarias.idTipoMaquinaria', '=', '1']                                                          
+                             ])
+                      ->orderBy('nombresmaquinarias.nombreMaquina', 'asc')
+                      ->get();
+
+        return $machines;
     }
 }

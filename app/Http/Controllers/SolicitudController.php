@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use SebastianBergmann\Environment\Console;
 
 use function Psy\info;
+use DateTime;
 
 class SolicitudController extends Controller
 {
@@ -41,7 +42,8 @@ class SolicitudController extends Controller
         $Apellidos = $request->input('Apellidos');
         $Telefono = $request->input('Telefono');
         $Email = $request->input('Email');
-        $Fecha = $request->input('FechaReq');
+        $Fecha = new DateTime($request->input('FechaReq'));
+        $FechaFin = new DateTime($request->input('FechaReqFin'));
         $Departamento = $request->input('Departamento'); 
         $Direccion = $request->input('Direccion');
         $Maquinarias = json_decode($request->input('Maquinarias'),true);
@@ -49,22 +51,28 @@ class SolicitudController extends Controller
         $idSolicitud=0;
         $TotalFactura =0;
 
-        foreach($Maquinarias as $Maqui){            
-            if ($Maqui["Horas_minima"] <= 44){
-                $TotalFactura += $Maqui["Precio_x_hora"] * $Maqui["Horas_minima"];
-            }else if($Maqui["Horas_minima"] > 44 && $Maqui["Horas_minima"] <= 176){
-                $TotalFactura += $Maqui["precioHoraSemana"] * $Maqui["Horas_minima"];
-            }else{
-                $TotalFactura += $Maqui["precioHoraMes"] * $Maqui["Horas_minima"];
-            }            
+        $diffDates = date_diff( $Fecha, $FechaFin )->format('%d');
+        $totalHours = 0;
+
+        foreach($Maquinarias as $Maqui){
+            $totalHours = $Maqui["Horas_minima"]*$diffDates;
+
+            if (  $totalHours  <= 44)
+                $TotalFactura += $Maqui["Precio_x_hora"] * $totalHours;
+            else if($totalHours > 44 && $totalHours <= 176)
+                $TotalFactura += $Maqui["precioHoraSemana"] * $totalHours;
+            else
+                $TotalFactura += $Maqui["precioHoraMes"] * $totalHours;
+                     
         }
                 
         $idSolicitud = DB::table('Solicituds')->insertGetId(["Fecha_solicitud"=>$Fecha,
-                                                "Localidad"=>$Departamento,
-                                              "Estado"=>"ACTIVO",
-                                              "Subtotal"=>$TotalFactura,
-                                              "direccionProyecto"=>$Direccion,
-                                              "estadoSolicitud" => "P"]);
+                                                             "fecha_Fin_Solicitud"=> $FechaFin,
+                                                             "Localidad"=>$Departamento,
+                                                             "Estado"=>"ACTIVO",
+                                                             "Subtotal"=>$TotalFactura,
+                                                             "direccionProyecto"=>$Direccion,
+                                                             "estadoSolicitud" => "P"]);
                                    
         foreach($Maquinarias as $obj){
             DB::insert('insert into detallesolicitud(id_solicitud,
@@ -75,7 +83,7 @@ class SolicitudController extends Controller
                                                      [
                                                       $idSolicitud,
                                                       $obj["id_maquinaria"],
-                                                      $obj["Horas_minima"],
+                                                      $obj["Horas_minima"] * $diffDates,
                                                       'ACTIVO'
                                                     ]);
         }
@@ -100,6 +108,7 @@ class SolicitudController extends Controller
     {        
         $Solicitud = Solicitud::select('solicituds.id_solicitud',
                               'solicituds.fecha_registro',
+                              'solicituds.fecha_Fin_Solicitud',
                               'solicituds.Subtotal',                                            
                               'detallesolicitud.horas',
                               'maquinarias.Nombre_maquinaria',                              
@@ -132,7 +141,6 @@ class SolicitudController extends Controller
     {        
     }
 
-
     /**
      * Function for send diferent mails
      * mail to owner machines
@@ -164,10 +172,12 @@ class SolicitudController extends Controller
              ->send(new MessageReceived($request, $machines, 'IQ', $idSolicitud));*/
 
         //Send mail to owners machine
+        /*
         foreach($machines as $machine){
             Mail::to($machine->Correo_Electronico)                    
              ->send(new MessageReceived(null, $machine, 'OM', $idSolicitud));
         }
+        */
     }
 
     

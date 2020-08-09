@@ -1,5 +1,9 @@
 <template>
+  <div>
+      <Header/>
+
   <div class="container Factura">
+  
         
         <div class="alert alert-success" role="alert">          
           <h4 class="alert heading">Solicitud Confirmada</h4>          
@@ -32,10 +36,15 @@
                                     <td>{{idSolicitudGet}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Fecha de Solicitud</td>
+                                    <td>Fecha inicio de renta: </td>
                                     <td>{{ fechaSolicitudGet }}</td>
                                 </tr>
                                 
+                                <tr>
+                                    <td>Fecha final de renta:</td>
+                                    <td> {{ fechaFinSolicitudGet }} </td>
+                                </tr>
+                                                         
                             </tbody>
                         </table>
                     </div> <!--Fin Tabla Derecha!-->
@@ -87,9 +96,23 @@
 
          </div> <!--Fin Panel Factura!-->      
     </div> <!--Fin div Inicial!-->
+
+    </div>
 </template>
+
 <script type="text/javascript">
+
+import Header from "./Layout/Header.vue";
+import Header_1 from "./Layout/Header_1.vue";
+import Footer from "./Layout/Footer.vue";
+
     export default {
+        components:{
+            Header,
+            Header_1,
+            Footer
+    },
+
     name :"confirmation",
      data(){
         return {
@@ -98,7 +121,9 @@
             impuesto:0,
             totalGeneral:0,
             idSolicitudGet: ' ',
-            fechaSolicitudGet: ' '
+            fechaSolicitudGet: ' ',
+            fechaFinSolicitudGet: ' ',
+            totalHorasSolicitadas: 0
         }
        },
        mounted(){
@@ -110,7 +135,9 @@
                          
                          this.subTotalCalculated = this.datafactura[0].Subtotal;
                          this.idSolicitudGet  =  this.datafactura[0].id_solicitud;
-                         this.fechaSolicitudGet = this.datafactura[0].fecha_registro;   
+
+                         this.fechaSolicitudGet = new Date(this.datafactura[0].fecha_registro).toISOString().slice(0,10); 
+                         this.fechaFinSolicitudGet = new Date(this.datafactura[0].fecha_Fin_Solicitud).toISOString().slice(0,10);
                          
                          this.impuesto = Number ( Number(this.subTotalCalculated) * 0.15);
                          this.totalGeneral = Number( Number(this.impuesto) + Number(this.subTotalCalculated) ).toFixed(2);

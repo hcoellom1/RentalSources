@@ -9,7 +9,7 @@
 
         <div class="alert alert-danger" v-if="has_error && !success">
                 <p v-if="error == 'registration_validation_error'">Validation Errors.</p>
-                <p v-else>El usuario no existe</p>
+                <p v-else>{{ errorMessage  }}</p>
         </div>
 
 				<div class="container-fluid">
@@ -20,13 +20,15 @@
 						<!--<form autocomplete="off" @submit.prevent="login" method="post"> !-->
                     <div class="form-group">
                         <label for="email">Correo Electrónico</label>
-                        <input type="email" id="email" class="form__input" placeholder="user@example.com" v-model="correo" required>
+                        <input type="email" id="email" class="form__input" 
+                               placeholder="user@example.com" 
+                               v-model="correo" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña</label>
                         <input type="password" id="password" class="form__input" v-model="contrasenia" required>
                     </div>
-                    <button type="submit" @click="login()" class="btn_entrar" >Entrar</button>
+                    <button type="submit" @click="validateFields()" class="btn_entrar" >Entrar</button>
               <!--  </form>!-->
 					</div>
 					<div class="row">
@@ -54,16 +56,34 @@
         correo: null,
         success :false,        
         has_error: false,
-        error:''
+        error:'',
+        errorMessage :''
       }
     },
     mounted() {
       //
     },
     methods: {
-      login() {
+
+      validateFields(){        
+        if (!this.correo){
+          this.has_error = true;
+          this.errorMessage = 'El correo es requerido';
+        }else if(!this.contrasenia){
+          this.has_error = true;
+          this.errorMessage = 'La contrasenia es requerido';
+        }else{
+
+          this.has_error = false;
+          this.errorMessage = ' ';
+          this.authenticateLogin();
+        }
+
+      },
+
+      authenticateLogin() {
         // get the redirect object
-        var redirect = this.$auth.redirect()
+        //var redirect = this.$auth.redirect()
         var app = this
         this.$auth.login({
           data: {
@@ -72,14 +92,16 @@
           },
           success: function() {            
             console.log("Exitoso");
-            app.success = true;
-            const redirectTo = 'Dashboard';
-            app.$router.push({name:redirectTo});
+            app.success = true;            
+            app.$router.push( {path: 'Dashboard'}).catch((err) => {
+               console.info(err.message);
+            });               
             
           },
           error: function(error) {            
             console.log('cagada:' + error);
-            app.has_error = true
+            app.errorMessage = 'El usuario no existe';
+            app.has_error = true;
           },
           rememberMe: true,
           fetchUser: true

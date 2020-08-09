@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Home from './components/home.vue';
 import Products from './components/Products/Products.vue';
 import Cart from './components/Cart.vue';
-import Factura from './components/Factura.vue';
+//import Factura from './components/Factura.vue';
 import Confirmation from './components/Confirmation.vue';
 import PaginaNoEncontrada from './components/NoEncontrada.vue';
 import Mantenimiento from './components/Mantenimiento.vue';
@@ -12,6 +12,7 @@ import Register from './components/Register.vue';
 import Dashboard from './components/Dashboard.vue';
 import MyMaquinaria from './components/MyMaquinaria.vue';
 import { stubFalse } from 'lodash';
+import { Store } from 'vuex';
 
 //import PageTwo from './views/PageTwo.vue';
 
@@ -79,6 +80,7 @@ let routes = [
       } 
     }], 
     meta:{
+      //requiresAuth:true
       auth:true
     }
   },
@@ -88,16 +90,7 @@ let routes = [
   }
 
 ];
-/*
-scrollBehavior: function (to) {
-  if (to.hash) {
-    return {
-      selector: to.hash
-    }
-  }
-}
-;
-*/
+
 
 function scrollBehavior(to, from, savedPosition) {
   if (to.hash && document.querySelector(to.hash)) {
@@ -114,5 +107,25 @@ const router = new VueRouter({
   mode: 'history',
   scrollBehavior    
 });
+
+
+
+/*
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if ( localStorage.getItem['auth_stay_signed_in'] ) {
+        next('/Login');
+    } 
+  } else {
+      next();
+  }
+
+});
+*/
+
+
+
+
+
 
 export default router;

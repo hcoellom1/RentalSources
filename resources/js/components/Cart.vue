@@ -2,8 +2,8 @@
 
 <div  >   <!--Inicio main--> 
 <Header/>
-<Header_1/>
-<div class="container" v-if="$store.state.cartCount > 0" style="margin-top:175px">  
+
+<div class="container" v-if="$store.state.cartCount > 0" style="margin-top:160px">  
  <div class="container mb-4 form">
   <div class ="row form-register"> <!-- Inicio Register-->
     <div class="col-12 form-detail-client">      
@@ -43,17 +43,31 @@
         </div>
  
         <div class="form-group row">
+                
+                <div class="col-sm-6">
+                    <label for="rtn">Fecha Inicio Solicitud:</label>
+                    <input type="date" 
+                           class="form-control" value=""                           
+                           v-model="FechaReq" 
+                           v-on:change="checkDate()"/>
+                </div>
 
+                <div class="col-sm-6">
+                    <label for="rtn">Fecha Fin Solicitud:</label>
+                    <input type="date" 
+                           class="form-control" value=""                           
+                           v-model="FechaReqFin" 
+                           v-on:change="checkDate()"/>
+                </div>
+
+        </div>  
+
+
+        <div class="form-group row">
                 <div class="col-sm-6">
                     <label for="Direccion">Ubicaci&oacute;n del proyecto:</label>
                     <input type="textarea" v-model="Direccion" class="form-control" placeholder="Dirección donde necesitará la maquinaria*" value="" />
                 </div>
-
-                <div class="col-sm-6">
-                    <label for="rtn">Fecha requerida:</label>
-                    <input type="date" v-model="FechaReq" class="form-control" value="" />
-                </div>
-
         </div>  
 
         </form>
@@ -81,9 +95,11 @@
                     <tbody>
                         <tr v-for="(MaquinariaLocals,index) in MaquinariaLocal" :key="MaquinariaLocals.id_maquinaria">                            
                             <td>{{MaquinariaLocals.Nombre_maquinaria}}</td>
-                            <td><input v-model.number="MaquinariaLocals.Horas_minima" 
+                            <td><input v-model.number="horasMinimas[index]" 
+                                       type = "number"
+                                       min = 1
+                                       max  = 500  step=1
                                        class="form-control" 
-                                       type="number" min=1 max=500  step=1 
                                        value="">
                             </td>
                                        
@@ -179,6 +195,7 @@ export default {
             saveMaquinaria:[],            
             errors :[],
             Localidades:[],
+            storageMaquinaria:[],
             Nombres:null,
             Apellidos:null,
             Identidad:null,
@@ -187,8 +204,9 @@ export default {
             Direccion:null,
             selectLocalidad:null,        
             Rtn:null,
-            FechaReq:null,
-            storageMaquinaria:[]
+            FechaReq:new Date().toISOString().slice(0,10),
+            FechaReqFin:new Date().toISOString().slice(0,10),            
+            totalHorasMinimas:0
         }
     },
     mounted(){
@@ -218,18 +236,31 @@ export default {
     computed:{        
         subtotalRow(){
                 return this.MaquinariaLocal.map((MaquinariaLocals)=>{                    
+                    var horasMinimaSelected = 0;
 
-                    if(MaquinariaLocals.Horas_minima <= 44){
-                       return Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
-                    }else if (MaquinariaLocals.Horas_minima > 44 && MaquinariaLocals.Horas_minima <= 176){
-                        return Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.precioHoraSemana);
+                    if(this.FechaReq<=this.FechaReqFin){
+                        var fi = new Date(this.FechaReq);
+                        var ff = new Date(this.FechaReqFin);
+                    
+                        var contdias = Math.round((ff-fi))/(1000*60*60*24);                    
+                        contdias = (contdias == 0 ? 1 : contdias);
+
+                        horasMinimaSelected = Number(contdias) * Number(MaquinariaLocals.Horas_minima) ;                    
+                    }
+
+
+                    if(horasMinimaSelected <= 44){
+                       return Number( horasMinimaSelected * MaquinariaLocals.Precio_x_hora);
+                    }else if (horasMinimaSelected > 44 && horasMinimaSelected <= 176){
+                        return Number(horasMinimaSelected * MaquinariaLocals.precioHoraSemana);
                     }else{
-                        return Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.precioHoraMes);
+                        return Number(horasMinimaSelected * MaquinariaLocals.precioHoraMes);
                     }
 
                 });
             },
-        precioHoraRow(){
+        precioHoraRow()
+        {
             return this.MaquinariaLocal.map((MaquinariaLocals)=>{
                 if(MaquinariaLocals.Horas_minima <= 44){
                     return Number(MaquinariaLocals.Precio_x_hora);
@@ -241,18 +272,47 @@ export default {
             });           
                 
         },
-        subTotalGeneral() {
+        subTotalGeneral() 
+        {
           return this.MaquinariaLocal.reduce((total,MaquinariaLocals) => {
+                var horasMinimaSelected = 0;
 
-            if(MaquinariaLocals.Horas_minima <= 44){
-                return total + Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.Precio_x_hora);
-            }else if (MaquinariaLocals.Horas_minima > 44 && MaquinariaLocals.Horas_minima <= 176){
-                return total + Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.precioHoraSemana);
+                if(this.FechaReq<=this.FechaReqFin){
+                    var fi = new Date(this.FechaReq);
+                    var ff = new Date(this.FechaReqFin);
+                    
+                    var contdias = Math.round((ff-fi))/(1000*60*60*24);                    
+                    contdias = (contdias == 0 ? 1 : contdias);
+
+                    horasMinimaSelected = Number(contdias) * Number(MaquinariaLocals.Horas_minima) ;                    
+                }
+
+
+            if(horasMinimaSelected <= 44){
+                return total + Number( horasMinimaSelected * MaquinariaLocals.Precio_x_hora);
+            }else if (horasMinimaSelected > 44 && horasMinimaSelected <= 176){
+                return total + Number( horasMinimaSelected * MaquinariaLocals.precioHoraSemana);
             }else{
-                return total + Number(MaquinariaLocals.Horas_minima*MaquinariaLocals.precioHoraMes);
+                return total + Number( horasMinimaSelected * MaquinariaLocals.precioHoraMes );
             }
 
           }, 0);
+        },
+        horasMinimas(){
+            return this.MaquinariaLocal.map((MaquinariaLocals)=>{
+                
+                if(this.FechaReq<=this.FechaReqFin){
+                    var fi = new Date(this.FechaReq);
+                    var ff = new Date(this.FechaReqFin);
+                    
+                    var contdias = Math.round((ff-fi))/(1000*60*60*24);                    
+                    contdias = (contdias == 0 ? 1 : contdias);
+
+                    return Number( Number(contdias) * Number(MaquinariaLocals.Horas_minima) );
+                    
+                }
+
+            });
         }
             
     },
@@ -281,7 +341,7 @@ export default {
                      this.Apellidos &&                     
                      this.Telefono &&
                      this.Email &&                    
-                     this.Direccion)
+                     this.Direccion && (this.FechaReq <= this.FechaReqFin))
                      {                         
                         this.GuardarFormulario();                        
                      }
@@ -312,11 +372,15 @@ export default {
                          this.errors.push('Dirección es requerido');
                          window.scrollTo(0,'ErrorsLines');  
                      }
-
+                     
+                     if (this.FechaReq > this.FechaReqFin){
+                         this.errors.push('La fecha final no debe ser menor que la fecha inicial');
+                         window.scrollTo(0,'ErrorsLines');  
+                     }
                      e.preventDefault();
             },
-
-             GuardarFormulario(){                 
+            
+            GuardarFormulario(){                 
               const idfactura=0;
               axios.post('SaveCart',{
                     Nombres: this.Nombres,
@@ -324,6 +388,7 @@ export default {
                     Telefono:  this.Telefono,
                     Email:      this.Email,
                     FechaReq:    this.FechaReq,
+                    FechaReqFin: this.FechaReqFin,                    
                     Departamento: this.$store.state.itemLocalidad,
                     Direccion: this.Direccion,
                     Maquinarias : JSON.stringify(this.MaquinariaLocal)                    
@@ -337,17 +402,31 @@ export default {
                 });
              
                
-            },
-
+            }, 
             
-    isNumber: function(evt) {
-      evt = (evt) ? evt : window.event;
-      var charCode = (evt.which) ? evt.which : evt.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46   ) {
-        evt.preventDefault();
-      } else {
-        return true;
-      }
+            checkDate: function(evt){
+                
+                var today = new Date().toISOString().slice(0,10);                
+
+                if ( this.FechaReq < today )
+                    this.FechaReq = new Date().toISOString().slice(0,10);
+                else if (this.FechaReq > this.FechaReqFin)
+                    evt.preventDefault();
+                                     
+                if ( this.FechaReqFin < today )
+                    this.FechaReqFin = new Date().toISOString().slice(0,10);
+                else if(this.FechaReqFin < this.FechaReq)
+                    evt.preventDefault();
+            },
+            
+            isNumber: function(evt) {
+                evt = (evt) ? evt : window.event;
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46   ) {
+                    evt.preventDefault();
+                } else {
+                    return true;
+            }
     }
 
   }    

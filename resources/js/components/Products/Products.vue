@@ -49,7 +49,7 @@
          <div class="product"> 
            <div class='product-body'>
               <div class='product-title'>
-                      <h6>{{Maquinarias.Nombre_maquinaria}}</h6>                      
+                      <h6>{{Maquinarias.nombreMaquina}} &nbsp; {{Maquinarias.Descripcion_maquinaria}}</h6>                      
               </div>
               <div class='Ubicacion'>
                 <a :href="'https://www.google.com/maps/search/?api=1'+Maquinarias.Nombre_localidad">{{Maquinarias.Nombre_localidad}}</a>
@@ -88,11 +88,11 @@
             </div>
                 <div class ='product-detail col-sm-5'>
                    <div class='product-title'>
-                      <h5>{{Maquinarias.Nombre_maquinaria}}</h5>
+                      <h5>{{Maquinarias.nombreMaquina}}</h5>
                       <a> {{Maquinarias.Nombre_localidad}}</a>
                     </div>
                         <div class='product-text'>
-                         <p><br>{{Maquinarias.Detalles_maquinaria}}</p> 
+                         <p><br>{{Maquinarias.Descripcion_maquinaria}}</p> 
                          </div>
             </div>
             <div class ='product-shop col-sm-4'>

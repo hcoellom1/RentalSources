@@ -51,7 +51,7 @@
   </thead>                  
         <tbody>
         <tr v-for="MaquinariaLocals in MyMaquinaria" :key="MaquinariaLocals.id_maquinaria" role="row" class="odd">            
-            <td>{{MaquinariaLocals.Nombre_maquinaria}}</td>
+            <td>{{MaquinariaLocals.nombreMaquina}}</td>
             <td>{{MaquinariaLocals.Descripcion_maquinaria}}</td>
             <td>{{MaquinariaLocals.Tipo_maquinarias}}</td>
             <td>{{MaquinariaLocals.Nombre_localidad}}</td>
