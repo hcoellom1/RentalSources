@@ -45,6 +45,7 @@ Route::get('MyMaquinaria/{mailOwner}', "MaquinariaController@showMyMaquinaria");
 
 Route::get('MachineNames', "MaquinariaController@getMachinesByName");
 
+Route::get('verify/{verification_code}', "AuthController@verifyUser");
 
 //post Route
 Route::post('Products', 'MaquinariaController@show');

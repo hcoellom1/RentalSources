@@ -48,23 +48,24 @@
       <div class="sidebar-heading">
         Solicitudes
       </div>
-
+      
       <!-- Nav Item - Pages Collapse Menu -->
+      <!-- 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-cog"></i>
           <span>Solicitudes Recibidas</span>
         </a>
       </li>
-
+-->
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
-        <li class="nav-item">
+        <li class="nav-item pointer">
         <!-- <a class="nav-link" href="#" @click.prevent="$auth.logout()"> !-->
-        <a class="nav-link" href="#" @click="$auth.logout()">
+        <a class="nav-link pointer" href="#"  @click="$auth.logout()">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Cerrar Sesión</span></a>
       </li>

@@ -91,12 +91,13 @@
             password: app.contrasenia
           },
           success: function() {            
+            /*
             console.log("Exitoso");
             app.success = true;            
-            app.$router.push( {path: 'Dashboard'}).catch((err) => {
-               console.info(err.message);
+            app.$router.push( {path:'Dashboard'}).catch((err) => {
+               console.log(err.message);
             });               
-            
+            */
           },
           error: function(error) {            
             console.log('cagada:' + error);

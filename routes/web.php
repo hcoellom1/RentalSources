@@ -1,6 +1,6 @@
 <?php
 
-Route::get('user/verify/{verification_code}', "AuthController@verifyUser");
+
 
 Route::get('{any}', function () {
     return view('welcome');

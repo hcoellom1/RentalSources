@@ -38,22 +38,24 @@
               </li>
 
                <li class="nav-item">
-                  <!-- <router-link v-if="$auth.user() != null " class="nav-link js-scroll-trigger"
-                                :to="{name:'Dashboard',hash:''}">{{$auth.user().name}}</router-link>
+                   <router-link v-if="$auth.user() != null " class="nav-link js-scroll-trigger"
+                                :to="{name:'Dashboard'}">{{$auth.user().name}}</router-link>
 
                   <router-link v-else class="nav-link js-scroll-trigger"
-                                        :to="{name:'Login',hash:''}">Login</router-link>  !-->
-
+                                        :to="{name:'Login'}">Login</router-link>  
+                 <!--
                   <router-link class="nav-link js-scroll-trigger"
                                         :to="{name:'Login',hash:''}">Login</router-link> 
-
+                !-->
                   
               </li>
 
               <li class="nav-item">
               <router-link to="/Cart">             
                   <a class="nav-link js-scroll-trigger" href="">
-                    <span class='fa fa-shopping-cart fa-2x'>Carrito</span>
+                    <span>Carrito
+                      <i class='fa fa-shopping-cart' aria-hidden="true"></i>
+                    </span>
                     <span class='CarritoCount'>( {{ $store.state.cartCount }} )</span>
                   </a>
                 </router-link>
@@ -69,7 +71,7 @@
 export default {
 name : "Header",
 mounted(){
-    console.log(this.$route.name);
+    
   /*
       if (localStorage.getItem("MaquinariaLocal")){
                         this.CarritoCount= JSON.parse(localStorage.getItem("MaquinariaLocal")).length;

@@ -70,7 +70,7 @@ class MaquinariaController extends Controller
          $idNewMachine = DB::table('maquinarias')->insertGetId([                            
                             "Descripcion_Maquinaria"=>$Descripcion,
                             "Disponibilidad"=>'SI',
-                            "Precio_x_Hora" => $Precio,
+                            "Precio_x_Hora" => $Precio * 1.10,
                             "Operacion" => $Accion,
                             "Latitud" => 0,
                             "Longitud" => 0,
@@ -79,8 +79,8 @@ class MaquinariaController extends Controller
                             "Id_tipo_maquinaria" => $Tipo,
                             "Horas_Minima" => $minimunHours,
                             "Imagen" => $DirImagen,
-                            "precioHoraMes" => $PrecioMes,
-                            "precioHoraSemana" => $PrecioSemana,
+                            "precioHoraMes" => $PrecioMes * 1.10,
+                            "precioHoraSemana" => $PrecioSemana *1.10,
                             "Correo_Electronico" => $emailOwner,
                             "idNombreMaquina" => $machineName
          ]);

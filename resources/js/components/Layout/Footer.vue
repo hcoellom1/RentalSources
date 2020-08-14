@@ -9,10 +9,10 @@ v-if = "$route.name !='Login' ">
                 </div>
                 <div class="col-sm-6 text-right text-center-xs">
                     <ul class="social-list list-inline">
-                                       <li><a href="https://www.facebook.com/pg/Rentalmaquinaria.hn/posts/?ref=page_internal"><i class="socicon socicon-facebook icon icon--xs"></i></a></li>
-                                       <li><button class="btn btn-tw" ><i class="fab fa-twitter"></i></button></li>
-                                       <li><a href="https://google.com"><i class="socicon socicon-google icon icon--xs"></i></a></li>
-                                       <li><a href="https://www.instagram.com/rental.hn/"><i class="socicon socicon-instagram icon icon--xs"></i></a></li>
+                                       <li><a href="https://www.facebook.com/pg/Rentalmaquinaria.hn/posts/?ref=page_internal"><i class="fab fa-facebook fa-2x"></i></a></li>
+                                       <li><a href="https://www.twitter.com" ><i class="fab fa-twitter fa-2x"></i></a></li>
+                                       <li><a href="https://google.com"><i class="fab fa-google fa-2x"></i></a></li>
+                                       <li><a href="https://www.instagram.com/rental.hn/"><i class="fab fa-instagram fa-2x"></i></a></li>
                      </ul>
                 </div>
             </div>

@@ -12,12 +12,12 @@
     Gracias por registrarse con nostros. No olvide completar su registro.    
 
     <p>
-    <br> Por favor siga el siguiente enlace o copie y pegue en la barra de direcciones de su navegador para confirmar su correo
+    <br> Por favor siga el siguiente enlace o copie y pegue en la barra de direcciones de su navegador para confirmar su correo electrónico
     </p>
     
     <p>
     <br>
-    <a href="{{ url('user/verify', $verification_code)}}">Confirm my email address </a>
+    <a href="{{ url('verify', $verification_code)}}">Confirmar mi correo electrónico </a>
     </p>
 
     <br/>

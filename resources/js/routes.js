@@ -11,6 +11,7 @@ import Login from './components/Login.vue';
 import Register from './components/Register.vue';
 import Dashboard from './components/Dashboard.vue';
 import MyMaquinaria from './components/MyMaquinaria.vue';
+import verify from './components/verify.vue';
 import { stubFalse } from 'lodash';
 import { Store } from 'vuex';
 
@@ -83,6 +84,12 @@ let routes = [
       //requiresAuth:true
       auth:true
     }
+  },
+  {
+    path: '/verify/:token',
+    name:'verify',
+    component: verify,
+    props:true
   },
   {
       path:"*",

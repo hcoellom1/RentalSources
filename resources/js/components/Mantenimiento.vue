@@ -1,7 +1,11 @@
 <template>    
     <div class="container form_stlye">
         <h1 class="h3 mb-2 text-gray-800">Registro de Nueva Maquinaria</h1>
-        <p class="mb-4">Ingrese toda la información requerida para poder registrar la maquinaria.</p>       
+
+        <p class="mb-4">Ingrese toda la información requerida para poder registrar la maquinaria.</p>
+
+        <p class="mb-4"><strong>**Nota: </strong> Al precio registrado por hora se le sumará un 10% por cargos por servicios de rental, 
+        el cual se le mostrará al usuario final**</p>
 
         <p v-if="errors.length" id="ErrorsLines">
             <b> Favor ingresar los siguientes campos: </b>

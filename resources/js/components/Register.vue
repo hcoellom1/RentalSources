@@ -16,7 +16,7 @@
                     </div>
                  <div class="form-group">
                         <label for="email">Correo Electrónico</label>
-                        <input type="email" id="email" class="form__input" placeholder="user@example.com" v-model="email" required>
+                        <input type="email" id="email" class="form__input" placeholder  ="user@example.com" v-model="email" required>
                     </div>
                   <div class="form-group">
                         <label for="password">Contraseña</label>
@@ -28,7 +28,7 @@
                         <input type="password" id="password_confirmation" class="form__input" v-model="password_confirmation" required>
                     </div>            
                   <div class="form-group row">
-                  <button @click="register()" type="submit" class="btn_entrar col-sm-8">Crear Usuario</button>
+                  <button type="submit" class="btn_entrar col-sm-8">Crear Usuario</button>
                   <button @click="$router.push('login')" class="btn_entrar col-sm-2">Volver</button>
                   </div>
             </form>
@@ -63,8 +63,6 @@
             password_confirmation: app.password_confirmation
           },
           success: function () {
-            app.success = true
-            app.$router.push({name: 'login', params: {successRegistrationRedirect: true}})
           },
           error: function (res) {
             console.log(res)
