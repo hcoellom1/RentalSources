@@ -4,7 +4,7 @@
 
         <p class="mb-4">Ingrese toda la información requerida para poder registrar la maquinaria.</p>
 
-        <p class="mb-4"><strong>**Nota: </strong> Al precio registrado por hora se le sumará un 10% por cargos por servicios de rental, 
+        <p class="mb-4"><strong>**Nota: </strong> Al precio registrado por hora se le sumará un 10% por cargos servicios de rental, 
         el cual se le mostrará al usuario final**</p>
 
         <p v-if="errors.length" id="ErrorsLines">

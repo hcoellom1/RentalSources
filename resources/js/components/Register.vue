@@ -9,7 +9,8 @@
                 <p v-if="error == 'registration_validation_error'">Validation Errors.</p>
                 <p v-else>Error, can not register at the moment. If the problem persists, please contact an administrator.</p>
             </div>
-            <form autocomplete="off" @submit.prevent="register" v-if="!success" method="post">
+            
+            <form autocomplete="off">
                 <div class="form-group">
                         <label for="name">Nombre</label>
                         <input type="name" id="name" class="form__input" placeholder="Nombre Completo" v-model="name" required>
@@ -28,10 +29,11 @@
                         <input type="password" id="password_confirmation" class="form__input" v-model="password_confirmation" required>
                     </div>            
                   <div class="form-group row">
-                  <button type="submit" class="btn_entrar col-sm-8">Crear Usuario</button>
+                  <button type="submit" @click="register" class="btn_entrar col-sm-8">Crear Usuario</button>
                   <button @click="$router.push('login')" class="btn_entrar col-sm-2">Volver</button>
                   </div>
             </form>
+
           </div>
         </div>
       </div>
@@ -62,7 +64,9 @@
             password: app.password,
             password_confirmation: app.password_confirmation
           },
-          success: function () {
+          success: function (res) {
+            console.log(res);
+            $router.push('login');
           },
           error: function (res) {
             console.log(res)

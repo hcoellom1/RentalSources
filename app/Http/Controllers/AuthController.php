@@ -86,7 +86,7 @@ class AuthController extends Controller
         });                      
         
         return response()->json(['success'=> true, 
-                                 'message'=> 'Thanks for signing up! Please check your email to complete your registration.']);
+                                 'message'=> 'Gracias por registrarse con nosotros. Favor revise su correo electrónico para completar su registro.']);
 
     }
 

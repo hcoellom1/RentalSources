@@ -1,15 +1,14 @@
 <template>
 
-<div  >   <!--Inicio main--> 
-<Header/>
+<div>   <!--Inicio main--> 
 
-<div class="container" v-if="$store.state.cartCount > 0" style="margin-top:160px">  
+<div class="container margin-app" v-if="$store.state.cartCount > 0" >  
  <div class="container mb-4 form">
   <div class ="row form-register"> <!-- Inicio Register-->
     <div class="col-12 form-detail-client">      
         
         <div class="page-header">
-            <h2>Nuevo registro de solicitud</h2>      
+            <h5>Nuevo registro de solicitud</h5>      
         </div>
 
         <p v-if="errors.length" id="ErrorsLines">
@@ -78,7 +77,7 @@
     <div class="row cart">
         <div class="col-12 shopping-cart">
             <div class="page-header">
-                <h2> Detalles de la solicitud</h2>      
+                <h4> Detalles de la solicitud</h4>      
             </div>
 
             <div class="table-responsive">

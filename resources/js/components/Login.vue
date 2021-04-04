@@ -2,8 +2,8 @@
 	<div class="container-fluid">
 		<div class="main-content bg-success text-center">
 			<div class="col-md-4 text-center company__info">
-				<span class="company__logo"><h2><span class="fa fa-android"></span></h2></span>
-				<img src="storage/images/Logo_Rental.png" class="logo">
+				<router-link to="/"><a class="navbar-brand js-scroll-trigger" href="#page-top">
+          <img class='logo' :src="'storage/images/Logo_Rental.png'" /></a></router-link>
 			</div>
 			<div class="col-md-8 col-xs-12 col-sm-12 login_form">
 
@@ -82,32 +82,38 @@
       },
 
       authenticateLogin() {
+        
+        
         // get the redirect object
         //var redirect = this.$auth.redirect()
         var app = this
         this.$auth.login({
-          data: {
+        data: {
             email: app.correo,
             password: app.contrasenia
-          },
-          success: function() {            
-            /*
-            console.log("Exitoso");
-            app.success = true;            
-            app.$router.push( {path:'Dashboard'}).catch((err) => {
-               console.log(err.message);
-            });               
-            */
-          },
-          error: function(error) {            
-            console.log('cagada:' + error);
+        },           
+        success: function() {            
+          /*
+          console.log("Exitoso");
+          app.success = true;            
+          app.$router.push( {path:'Dashboard'}).catch((err) => {
+          console.log(err.message);
+          });               
+          */
+        },
+        error: function(error) {                  
+            console.log('Error' + error.response);
             app.errorMessage = 'El usuario no existe';
-            app.has_error = true;
-          },
+            app.has_error = true;       
+        },
           rememberMe: true,
           fetchUser: true
         })
+
       }
+
+
+
     }
   }
 </script>

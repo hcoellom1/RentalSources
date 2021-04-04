@@ -1,9 +1,7 @@
 <template>
   
   <div>
-
-    
-
+<Header/>
     <transition>
       <router-view :key="$route.fullPath" class="view one"></router-view>
     </transition>            

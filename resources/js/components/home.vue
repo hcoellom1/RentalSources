@@ -1,7 +1,5 @@
 <template>
 <div>
-    <Header/>
-    <Header_1/>
     <carousel/>
     <compra/>
     <renta/>
@@ -19,7 +17,7 @@ import Header from "./Layout/Header.vue";
 import Header_1 from "./Layout/Header_1.vue";
 import Footer from "./Layout/Footer.vue";
 
-import carousel from "./home/Carousel-section.vue";
+import carousel from "./home/Carousel-Section.vue";
 import compra from "./home/Compra-section.vue" ;
 import renta from "./home/Renta-section.vue";
 import nosotros from "./home/Nosotros-section.vue";

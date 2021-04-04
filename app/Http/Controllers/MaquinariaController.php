@@ -186,4 +186,30 @@ class MaquinariaController extends Controller
 
         return $machines;
     }
+
+
+    public function showByName(Request $request)
+    {
+        $Localidades=($request->localidad);
+        $TipoMaquinaria=($request->tipoMaquinaria);
+        $Name = ($request->machineName);
+        
+        $Maquinaria = Maquinaria::select('maquinarias.id_maquinaria',
+                                         'nombresmaquinarias.nombreMaquina',
+                                         'maquinarias.Precio_x_Hora',
+                                         'maquinarias.precioHoraMes',
+                                         'maquinarias.precioHoraSemana',
+                                         'maquinarias.Descripcion_maquinaria',
+                                         'localidads.Nombre_localidad',
+                                         'maquinarias.imagen')                               
+                               ->join('localidads','maquinarias.id_localidad','=','localidads.Id_localidad')     
+                               ->join('nombresmaquinarias', 'maquinarias.idNombreMaquina','=','nombresmaquinarias.idNombreMaquina')                         
+                               ->whereIn('maquinarias.id_localidad',$Localidades)
+                               ->whereIn('maquinarias.id_tipo_maquinaria',$TipoMaquinaria)
+                               ->whereIn('nombresmaquinarias.nombreMaquina', 'like', '%'.$TipoMaquinaria.'%')
+                               ->get();
+      
+        return ($Maquinaria);
+        
+    }
 }

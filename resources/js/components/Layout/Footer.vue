@@ -1,6 +1,6 @@
 <template>
 
-<footer class="py-5 bg-dark"
+<footer class="py-2 bg-dark"
 v-if = "$route.name !='Login' ">
         <div class="container">
             <div class="row">

@@ -39,10 +39,6 @@
 </template>
 
 <script>
-
-/*
-                                           
-                                               */
 export default {
 name :"Header_1",
         data(){

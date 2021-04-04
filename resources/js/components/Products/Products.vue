@@ -1,8 +1,6 @@
-<template  >
-<div>
-    <Header/>
-    <Header_1/>   <!--Inicio main--> 
-<div class="main-products" style="margin-top:175px">
+<template >
+<div>     
+<div class="main-products margin-app">
 <div class="row"> 
   <div class="col-md-2 left-nav">
      <div class='Mod-view text-right'>

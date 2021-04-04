@@ -47,6 +47,8 @@ Route::get('MachineNames', "MaquinariaController@getMachinesByName");
 
 Route::get('verify/{verification_code}', "AuthController@verifyUser");
 
+
+
 //post Route
 Route::post('Products', 'MaquinariaController@show');
 
@@ -55,3 +57,5 @@ Route::post('ProductsCart', 'MaquinariaController@getMaquinaria');
 Route::post('SaveCart','SolicitudController@Store');
 
 Route::post('image/SaveMaquinaria', 'MaquinariaController@store');
+
+Route::post('FindByName', "MaquinariaController@showByName");
