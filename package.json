@@ -30,7 +30,7 @@
     "dependencies": {
         "@websanova/vue-auth": "^3.2.1-beta",
         "es6-promise": "^4.2.8",
-        "node-sass": "^4.14.1",
+        "node-sass": "^7.0.0",
         "vue-search-select": "^2.8.3",
         "vue-select": "^3.4.0",
         "vue-sweetalert2": "^2.1.4",
